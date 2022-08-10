@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./Usecontext";
 import TelaCadastro from "./TelaCadastro";
 import TelaLogin from "./TelaLogin";
+import TelaDelete from "./DeleteTest";
 
 function App() {
   
@@ -17,6 +18,7 @@ function App() {
         <Routes>
             <Route path="/" element={<TelaLogin />} />
             <Route path="/sign-up" element={<TelaCadastro />} />
+            <Route path="/home" element={<TelaDelete />} />
         </Routes>
     </BrowserRouter>
 </UserContext.Provider>
