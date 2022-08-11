@@ -23,7 +23,7 @@ export default function SigninScreen() {
       console.log(data);
       setLogo(data.profileImage)
       setName(data.name)
-      navigate("/home")
+      navigate("/timeline")
       let token = localStorage.setItem("token", data.token)
       setToken(token)
     })

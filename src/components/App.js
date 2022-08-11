@@ -4,6 +4,7 @@ import UserContext from "./Usecontext";
 import SignupScreen from "./Signup";
 import SigninScreen from "./Login";
 import TelaDelete from "./DeleteTest";
+import Timeline from "./Timeline";
 
 function App() {
   
@@ -18,7 +19,7 @@ function App() {
         <Routes>
             <Route path="/" element={<SigninScreen />} />
             <Route path="/sign-up" element={<SignupScreen />} />
-            <Route path="/home" element={<TelaDelete />} />
+            <Route path="/timeline" element={<Timeline />} />
         </Routes>
     </BrowserRouter>
 </UserContext.Provider>
