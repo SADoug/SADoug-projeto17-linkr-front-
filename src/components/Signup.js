@@ -5,7 +5,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 
-export default function TelaCadastro() {
+export default function SignupScreen() {
 
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");

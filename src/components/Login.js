@@ -5,37 +5,37 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "./Usecontext";
 
-export default function TelaLogin() {
+export default function SigninScreen() {
   const [email, setEmail] = React.useState("opa@teste.com");
-  const [senha, setSenha] = React.useState("12345678");
+  const [password, setPassword] = React.useState("12345678");
   const navigate = useNavigate();
-  const { setToken, setDados, setLogo, setName } = useContext(UserContext);
+  const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
   function login() {
     const URL = "http://localhost:4000/signin";
 
     const promise = axios.post(URL, {
       email, // email: email
-      password: senha
+      password: password
     });
     promise.then(response => {
       const { data } = response;
       console.log(data);
-      setToken(data.token)
       setLogo(data.profileImage)
       setName(data.name)
       navigate("/home")
-
+      let token = localStorage.setItem("token", data.token)
+      setToken(token)
     })
     promise.catch(err => {
-      alert("Insira dados válidos")
+      alert("Invalid data")
     });
   }
 
 
 
   return (
-    <ContainerMaior>
+    <Main>
       <Authcontainer>
         <Logo>
           <h1>Linkr</h1>
@@ -43,19 +43,25 @@ export default function TelaLogin() {
             save, share and discover <br /> the best links on the web
           </span>
         </Logo>
-      </Authcontainer><Container>
+      </Authcontainer>
+      <Container>
 
         <input typeof="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input typeof="text" placeholder="Password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+        <input typeof="text" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
         <Button onClick={login}>Log in</Button>
         <StyledLink to="/sign-up">First time? Create an account!</StyledLink>
       </Container>
-    </ContainerMaior>)
+    </Main>)
 }
 
-const ContainerMaior = styled.div`
+const Main = styled.div`
 display: flex;
+
+@media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    }
 `
 const Authcontainer = styled.div`
   display: flex;
@@ -130,6 +136,21 @@ font-size: 27px;
 line-height: 40px;
 color:#9F9F9F;
 }
+
+
+@media (max-width: 500px) {
+    
+    width: 100vw;
+    height: 73.7%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    h1 {
+      font-size: 76px;
+    }
+    span {
+      font-size: 23px;
+      line-height: 34px;
+    }}
 `;
 
 const Button = styled.div`

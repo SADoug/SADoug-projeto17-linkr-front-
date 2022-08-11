@@ -8,8 +8,7 @@ import UserContext from "./Usecontext";
 export default function TelaDelete() {
 
   const navigate = useNavigate();
-  
-  const { token } = useContext(UserContext)
+  let token = localStorage.getItem("token")
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
