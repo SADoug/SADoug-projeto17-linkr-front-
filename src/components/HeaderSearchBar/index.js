@@ -11,13 +11,13 @@ import { ProfilePic } from '../../styles/profilePic';
 
 const HeaderSearchBar = ({setDropDownState}) => {
     const [searchResults, setSearchResults] = useState(null);
-    const [user] = useContext(userContext);
+    const [user, setUser] = useContext(userContext);
     const navigate = useNavigate();
 
     const onSubmit = async value => {
-        const config = {headers: {authorization: `Bearer ${user.token}`}}
-        const results = await axios.post(process.env.REACT_API_URL + '/users', { searchString: value}, config);
-        setSearchResults(results.data.rows);
+        const config = {headers: { authorization: `Bearer ${user.token}`}}
+        const results = await axios.post(process.env.REACT_API_URL + '/users', { searchString: value }, config)
+        setSearchResults(results.data.rows)
     }
 
     const submitHandler = event => {
@@ -25,57 +25,54 @@ const HeaderSearchBar = ({setDropDownState}) => {
         onSubmit()
     }
 
-    const onChange = ({ target }) => {
-        if(target.value.length < 3) {
-            return setSearchResults(null);
-        }
+    const onChange = ({target}) => {
+        if(target.value.length < 3) return setSearchResults(null)
         onSubmit(target.value);
     }
 
     const onFocusOut = () => {
         console.log("focus out");
+        setTimeout(() => setDropDownState((prev) => !prev), 5)
     }
 
-    const changeHandler = debounce(onChange)//importar funcao
+    const changeHandler = debounce(onChange);
 
 
-    const RenderResults = ({ resultsList }) => {
-        if(resultsList === 'loading'){
+    const RenderResults = ({resultsList}) => {
+        if(resultsList === 'loading')
             return <Loading/>
-        }
-
-        if(resultsList.length === 0){
+        
+        if(resultsList.length === 0)
             return <SearchBarUnclickableButton>
                 {'User not found :('}
             </SearchBarUnclickableButton>
-        }
-
-        return resultsList.map(({profile_image, username, id, follower}) => <SearchBarButtonResult onClick={() => navigate(`/user/${id}`)}>
-                <ProfilePic alt='profile-picture' src={profile_image} radins={39} />
-                <span>{username}</span>
+        return resultsList.map(({profilePicture, userName, id, follower}) => <SearchBarButtonResult onClick={() => navigate(`/user/${id}`)}>
+                <ProfilePic alt='profile-picture' src={profilePicture} radius={39} />
+                <span>{userName}</span>
                 {follower ? <small>• following</small> : <></>}
                 {id === user.id ? <small>• you</small> : <></>}
-            </SearchBarButtonResult>  
-        )
+            </SearchBarButtonResult>    
+        )    
     }
 
     return <SBWithDropdown>
-    <SearchBarContainer onSubmit={submitHandler}>
-        <SearchBarInput
-            placeholder='Search for people'
-            onChange={changeHandler}
-            onBlur={onFocusOut}
-        />
-        <SearchBarButton type='submit'>
-            <SearchBarIcon/>
-        </SearchBarButton>
-    </SearchBarContainer>
-    <SearchBarDropdown state={searchResults}>
-        {searchResults ? <RenderResults resultsList={searchResults}/> : <></> }
-    </SearchBarDropdown>
-</SBWithDropdown>
+        <SearchBarContainer onSubmit={submitHandler}>
+            <SearchBarInput
+                placeholder='Search for people'
+                onChange={changeHandler}
+                onBlur={onFocusOut}
+            />
+            <SearchBarButton type='submit'>
+                <SearchBarIcon/>
+            </SearchBarButton>
+        </SearchBarContainer>
+        <SearchBarDropdown state={searchResults}>
+            {searchResults ? <RenderResults resultsList={searchResults}/> : <></> }
+        </SearchBarDropdown>
+    </SBWithDropdown>
 
 }
+
 
 const SBWithDropdown = styled.section`
     position: relative;
@@ -195,5 +192,4 @@ const SearchBarUnclickableButton = styled(SearchBarButtonResult)`
     cursor: default;
 `
 
-export default HeaderSearchBar;
-
+export default HeaderSearchBar

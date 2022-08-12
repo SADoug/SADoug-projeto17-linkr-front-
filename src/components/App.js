@@ -1,20 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from 'react';
+import userContext from "../contexts/userContext";
 import styled from 'styled-components';
 import Header from './Header/index';
 
 function App() {
+  const tokenStorageString = localStorage.getItem("user");
+  const tokenStorage = JSON.parse(tokenStorageString);
+  const [token, setToken] = useState(tokenStorage);
 
   return (
-    <AppContainer>
-       <Header />
-    <BrowserRouter>
-      <Routes>
-        <Route >
-          <Route path='/user/:id'/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </AppContainer>
+    <userContext.Provider value={[token, setToken]}><AppContainer>
+      <BrowserRouter>
+        <Routes>
+            <Route path='/' element={<Header/>}/>
+        </Routes>
+      </BrowserRouter>
+    </AppContainer></userContext.Provider>
   );
 }
 
