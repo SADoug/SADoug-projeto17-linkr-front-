@@ -27,7 +27,7 @@ export default function SearchBar(){
           promise.then((response) => setSearchResults(response.data));
           promise.catch((error) => console.log(error.response.data));
         }
-      }, [refresh]);
+      }, [refresh, search, token.token]);
     
 
       return (

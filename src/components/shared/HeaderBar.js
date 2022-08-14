@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect, } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import userContext from "../../contexts/userContext";
 import { IoChevronDown } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import UserContext from "../../contexts/Usercontext";
@@ -44,7 +43,7 @@ export default function HeaderBar() {
             navigate("/");
           });
         }
-      }, [refresh]);
+      }, [refresh, localToken, navigate, setToken, setUserImage, setUsername, token.token, userImage]);
 
         const toLogout = async () => {
         localStorage.removeItem("userInfo");

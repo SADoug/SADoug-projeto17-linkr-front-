@@ -1,17 +1,15 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { FaTrash, FaRetweet } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { TiPencil } from "react-icons/ti";
 import { ThreeDots } from "react-loader-spinner";
-import UserContext from "../../contexts/Usercontext";
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
 export default function PostCard(props) {
     const {
         link,
-        username,
         titleLink,
         imageLink,
         descriptionLink,
@@ -20,13 +18,10 @@ export default function PostCard(props) {
         idUser,
     } = props.post;
 
-    const { token } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
     const [editing, setEditing] = useState(false);
     const [descriptionEdit, setDescriptionEdit] = useState("");
     const [description, setDescription] = useState(props.post.description);
-    const tokenJwt = !token.token ? JSON.parse(localStorage.getItem("tokenUser"))
-        : token;
     const { user, refresh } = props;
     const [exclude, setExclude] = useState(false);
     const loader = (
@@ -42,7 +37,6 @@ export default function PostCard(props) {
     const navigate = useNavigate();
     const URL = "https://linkr-projeto17.herokuapp.com/";
     const inputRef = useRef(null);
-    const idOriginal = idPost ? idPost : id;
 
 
     function redirectToLink() {
@@ -57,6 +51,7 @@ export default function PostCard(props) {
             };
             const response = await axios.delete(`${URL}posts/${id}`, config);
             setExclude(false);
+            console.log(response);
             refresh([]);
         } catch (e) {
             alert("Não foi possível excluir o post!");
@@ -175,13 +170,13 @@ export default function PostCard(props) {
                         <p
                             className="username"
                             onClick={() =>
-                                navigate(`/user/${idPost ? userRetweet.id : idUser}`)
+                                navigate(`/user/${idPost}`)
                             }
                         >
-                            {idPost ? userRetweet.username : username}
+                            {idPost}
                         </p>
                         <p className="description">
-                            {editing ? (
+                            {editing(
                                 <textarea
                                     disabled={loading}
                                     ref={inputRef}
@@ -192,13 +187,6 @@ export default function PostCard(props) {
                                     }}
                                     onKeyDown={verifyKey}
                                 />
-                            ) : (
-                                <ReactHashtag
-                                    onHashtagClick={(hashtag) =>
-                                        navigate(`/hashtag/${hashtag.replace("#", "")}`)
-                                    }
-                                >{description}
-                                </ReactHashtag>
                             )}
                         </p>
                         <div className="link-metadata" onClick={() => redirectToLink()}>
