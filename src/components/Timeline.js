@@ -2,9 +2,8 @@ import styled from "styled-components";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
 import { TailSpin } from "react-loader-spinner";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useInterval from "use-interval";
 
 import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
@@ -26,16 +25,14 @@ export default function Timeline() {
   const navigate = useNavigate();
 
     const URL = "http://localhost:4000/timeline";
-    const localToken = localStorage.getItem("tokenUser");
-  
- 
-   
+    const localToken = localStorage.getItem("token");
+
 
     async function request() {
       try {
-        const config = { headers: { Authorization: `Bearer ${token.token}` } };
+        const config = { headers: { Authorization: `Bearer ${localToken}` } };
         const response = await axios.get(`${URL}posts?page=1`, config);
-        const user = await axios.get(`${URL}userToken`, config);
+        const user = await axios.get(`${URL}localToken`, config);
         setPosts(response.data);
         setUser(user.data);
       } catch (e) {
@@ -46,7 +43,7 @@ export default function Timeline() {
 
     async function requestGetPosts() {
       try {
-        const config = { headers: { Authorization: `Bearer ${token.token}` } };
+        const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
         const response = await axios.get(`${URL}posts?page=${page}`, config);
         

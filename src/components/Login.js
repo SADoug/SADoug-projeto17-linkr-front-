@@ -6,8 +6,8 @@ import { useContext } from "react";
 import UserContext from "../contexts/Usercontext";
 
 export default function SigninScreen() {
-  const [email, setEmail] = React.useState("opa@teste.com");
-  const [password, setPassword] = React.useState("12345678");
+  const [email, setEmail] = React.useState("malalayz@gmail.com");
+  const [password, setPassword] = React.useState("malalayz123");
   const navigate = useNavigate();
   const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
