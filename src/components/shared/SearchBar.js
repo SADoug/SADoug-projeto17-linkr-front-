@@ -47,7 +47,8 @@ export default function SearchBar(){
             <div className="icon">
               <AiOutlineSearch
                 onClick={() => {
-                  if (searchResults.length > 0) {
+               
+                  if (searchResults) {
                     navigate(`/user/${searchResults[0].id}`);
                   }
                 }}
