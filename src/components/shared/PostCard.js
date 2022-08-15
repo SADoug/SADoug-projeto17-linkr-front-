@@ -35,7 +35,7 @@ export default function PostCard(props) {
     );
     const tokenObject = localStorage.getItem("tokenUser");
     const navigate = useNavigate();
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const URL = "https://localhost:4000/";
     const inputRef = useRef(null);
 
 

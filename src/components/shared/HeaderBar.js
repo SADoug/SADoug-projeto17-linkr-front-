@@ -14,12 +14,12 @@ export default function HeaderBar() {
     const [refresh, setRefresh] = useState({ token: "" });
     const [logout, setLogout] = useState(false);
     const navigate = useNavigate();
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const URL = "https://localhost:4000/";
 
-    const localToken = JSON.parse(localStorage.getItem("tokenUser"));
+    const localToken = localStorage.getItem("token");
 
     useEffect(() => {
-        if (!token.token && !userImage) {
+        if (!localToken && !userImage) {
           if (!localToken) {
             navigate("/");
             console.log("teste");
@@ -28,9 +28,9 @@ export default function HeaderBar() {
             setRefresh({ ...localToken });
           }
         } else {
-          const promise = axios.get(`${URL}userToken`, {
+          const promise = axios.get(`${URL}user`, {
             headers: {
-              Authorization: `Bearer ${token.token}`,
+              Authorization: `Bearer ${localToken}`,
             },
           });
           promise.then(({ data }) => {
@@ -39,15 +39,15 @@ export default function HeaderBar() {
           });
           promise.catch((error) => {
             console.log(error.response.data);
-            localStorage.removeItem("tokenUser");
+            localStorage.removeItem("token");
             navigate("/");
           });
         }
-      }, [refresh, localToken, navigate, setToken, setUserImage, setUsername, token.token, userImage]);
+      }, [refresh, localToken, navigate, setToken, setUserImage, setUsername, localToken, userImage]);
 
         const toLogout = async () => {
         localStorage.removeItem("userInfo");
-        localStorage.removeItem("tokenUser");
+        localStorage.removeItem("token");
         navigate("/");
       };
 

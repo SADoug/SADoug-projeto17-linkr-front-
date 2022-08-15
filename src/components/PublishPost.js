@@ -11,10 +11,10 @@ export default function PublishPost(props) {
     const [text, setText] = useState("");
     const [publishLoading, setPublishLoading] = useState(false);
 
-    const tokenJwt = !token.token
-    ? JSON.parse(localStorage.getItem("token"))
-    : token;
-  const URL = "http://localhost:4000/posts";
+    const tokenJwt = localStorage.getItem("token");
+    console.log(tokenJwt);
+   
+    const URL = "http://localhost:4000/posts";
 
   function sendPost(event) {
     event.preventDefault();

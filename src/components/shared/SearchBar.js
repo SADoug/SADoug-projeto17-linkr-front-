@@ -9,25 +9,25 @@ import UserContext from '../../contexts/Usercontext';
 
 export default function SearchBar(){
     const [search, setSearch] = useState("")
-    const [searchResults, setSearchResults] = useState(null);
+    const [searchResults, setSearchResults] = useState();
     const [refresh, setRefresh] = useState(false);
     const { token } = useContext(UserContext);
 
     const navigate = useNavigate();
-
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const localToken = localStorage.getItem("token");
+    const URL = "http://localhost:4000/";
 
     useEffect(() => {
         if (!!search) {
           const promise = axios.get(`${URL}users/search?user=${search}`, {
             headers: {
-              Authorization: `Bearer ${token.token}`,
+              Authorization: `Bearer ${localToken}`,
             },
           });
           promise.then((response) => setSearchResults(response.data));
           promise.catch((error) => console.log(error.response.data));
         }
-      }, [refresh, search, token.token]);
+      }, [refresh, search, localToken]);
     
 
       return (
@@ -47,14 +47,14 @@ export default function SearchBar(){
             <div className="icon">
               <AiOutlineSearch
                 onClick={() => {
-                  if (searchResults.length > 0) {
+                  if (searchResults === true) {
                     navigate(`/user/${searchResults[0].id}`);
                   }
                 }}
               />
             </div>
           </SearchBarDiv>
-          {searchResults.length > 0 ? (
+          {searchResults === true ? (
             <ResultContainer>
               {searchResults.map((result, index) => {
                 return (
