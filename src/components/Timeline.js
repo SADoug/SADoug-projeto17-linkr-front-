@@ -66,7 +66,7 @@ export default function Timeline() {
     async function requestGetNewPosts() {
       try {
         if (posts[0] !== "initial" && posts[0] !== "error") {
-          const config = { headers: { Authorization: `Bearer ${token.token}` } };
+          const config = { headers: { Authorization: `Bearer ${localToken}` } };
   
           const lastPostId = posts[0].id;
   
