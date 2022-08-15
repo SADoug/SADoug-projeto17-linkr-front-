@@ -14,7 +14,7 @@ export default function SignupScreen() {
     const navigate = useNavigate();
 
     function cadastrar() {
-        const URL = "https://linkr-projeto17.herokuapp.com/";
+        const URL = "http://localhost:4000/signup";
         ;
         const promise = axios.post(URL, {
             email: email,

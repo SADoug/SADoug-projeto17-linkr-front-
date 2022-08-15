@@ -25,7 +25,7 @@ export default function Timeline() {
  
   const navigate = useNavigate();
 
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const URL = "http://localhost:4000/timeline";
     const localToken = JSON.parse(localStorage.getItem("tokenUser"));
   
     useEffect(() => {
