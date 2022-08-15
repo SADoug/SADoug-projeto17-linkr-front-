@@ -20,7 +20,7 @@ export default function SignupScreen() {
             email: email,
             password: senha,
             username: username,
-            profileImage: foto,
+            profile_image: foto,
         });
         promise.then(response => {
             const { data } = response;
