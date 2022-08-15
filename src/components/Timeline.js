@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
 import { TailSpin } from "react-loader-spinner";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import HeaderBar from "./shared/HeaderBar";
@@ -21,121 +21,125 @@ export default function Timeline() {
   const [user, setUser] = useState({});
   const [page, setPage] = useState(1);
   const [loadMore, setLoadMore] = useState(true);
- 
+  const [Hashtags, setHashtags] = useState("");
+
   const navigate = useNavigate();
 
-    const URL = "http://localhost:4000/timeline";
-    const localToken = localStorage.getItem("token");
+  const URL = "http://localhost:4000/timeline";
+  const localToken = localStorage.getItem("token");
 
 
-    async function request() {
-      try {
-        const config = { headers: { Authorization: `Bearer ${localToken}` } };
-        const response = await axios.get(`${URL}posts?page=1`, config);
-        const user = await axios.get(`${URL}localToken`, config);
+  async function request() {
+    try {
+      const config = { headers: { Authorization: `Bearer ${localToken}` } };
+      const response = await axios.get(`${URL}posts?page=1`, config);
+
+      setPosts(response.data);
+
+    } catch (e) {
+      setPosts(["error"]);
+      console.log(e);
+    }
+  }
+
+  async function requestGetPosts() {
+    try {
+      const config = { headers: { Authorization: `Bearer ${localToken}` } };
+
+      const response = await axios.get(`http://localhost:4000/posts?page=${page}`, config);
+
+      if (posts[0] === "initial") {
         setPosts(response.data);
-        setUser(user.data);
-      } catch (e) {
-        setPosts(["error"]);
-        console.log(e);
+      } else {
+        setPosts([...posts, ...response.data]);
       }
+
+      if (response.data.length === 0) {
+        setLoadMore(false);
+      }
+      setPage(page + 1);
+    } catch (e) {
+      setPosts(["error"]);
+      console.log(e, "requestGetPosts");
+    }
+  }
+  
+    useEffect(() => {
+        requestGetPosts();}
+    , []);
+  function renderPosts(posts) {
+    if (posts.length === 0) {
+      return (
+        <div className="message-container">
+        </div>
+      );
     }
 
-    async function requestGetPosts() {
-      try {
-        const config = { headers: { Authorization: `Bearer ${localToken}` } };
-
-        const response = await axios.get(`${URL}posts?page=${page}`, config);
-        
-        if (posts[0] === "initial") {
-          setPosts(response.data);
-        } else {
-          setPosts([...posts, ...response.data]);
-        }
-  
-        if (response.data.length === 0) {
-          setLoadMore(false);
-        }
-        setPage(page + 1);
-      } catch (e) {
-        setPosts(["error"]);
-        console.log(e, "requestGetPosts");
-      }
+    if (posts[0] === "error") {
+      return (
+        <div className="message-container">
+          <p className="message">
+            An error occured while trying to fetch the posts, please refresh the
+            page
+          </p>
+        </div>
+      );
     }
 
-    async function requestGetNewPosts() {
-      try {
-        if (posts[0] !== "initial" && posts[0] !== "error") {
-          const config = { headers: { Authorization: `Bearer ${token.token}` } };
-  
-          const lastPostId = posts[0].id;
-  
-          const newPosts = await axios.get(
-            `${URL}posts/new/${lastPostId}`,
-            config
-          );
+    return posts.map((post, index) => {
+      return (
+        <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
+      );
+    });
+  }
 
-          if (newPosts.data.length > 0) {
-            setNewPosts(newPosts.data);
-            setQtyNewPosts(newPosts.data.length);
-          }
-        }
-      } catch (e) {
-        console.log(e, "requestGetNewPosts");
-      }
-    }
+  useEffect(() => {
+    const URL = "http://localhost:4000/hashtags";
+    const promise = axios.get(URL);
+    promise.then(response => {
+      setHashtags(response.data)
+      response.data.map(hashtags => console.log("data", hashtags.name));
+    })
+    promise.catch(err => {
+      alert("Data invalid")
+    });
+  }, []);
+  console.log("HASHTAGS", Hashtags.name)
 
-    function renderPosts(posts) {
-      if (posts.length === 0) {
-        return (
+  return posts[0] === "initial" ? (
+    <Div>
+      <HeaderBar />
+      <div className="timeline-screen-container">
+        <div className="timeline-container">
+          <div className="search-container-mobile">
+            <SearchBar />
+          </div>
+
+          <h1>timeline</h1>
+          <PublishPost
+            refreshTimeline={refreshTimeline}
+            setRefreshTimeline={setRefreshTimeline}
+          />
           <div className="message-container">
-          </div>
-        );
-      }
-  
-      if (posts[0] === "error") {
-        return (
-          <div className="message-container">
-            <p className="message">
-              An error occured while trying to fetch the posts, please refresh the
-              page
-            </p>
-          </div>
-        );
-      }
-
-      return posts.map((post, index) => {
-        return (
-          <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
-        );
-      });
-    }
-
-    return posts[0] === "initial" ? (
-      <Div>
-        <HeaderBar />
-        <div className="timeline-screen-container">
-          <div className="timeline-container">
-            <div className="search-container-mobile">
-              <SearchBar />
-            </div>
-  
-            <h1>timeline</h1>
-            <PublishPost
-              refreshTimeline={refreshTimeline}
-              setRefreshTimeline={setRefreshTimeline}
-            />
-            <div className="message-container">
-              <p className="message">Loading . . .</p>
-            </div>
-          </div>
-          <div className="trending-hashtags-container">
-            
+            <p className="message">Loading . . .</p>
           </div>
         </div>
-      </Div>
-    ) : (
-      <Div>
+        <div className="trending-hashtags-container">
+          <Tranding>
+          <h1>trending</h1>
+        <div>
+        </div>
+          {Hashtags && (
+            Hashtags.map(hashtags => <p key={hashtags.id}># {hashtags.name}</p>)
+          )}
+          </Tranding>
+
+        </div>
+      </div>
+    </Div>
+  ) : (
+    <Div>
+
       <HeaderBar />
       <div className="timeline-screen-container">
         <div className="timeline-container">
@@ -149,37 +153,75 @@ export default function Timeline() {
             setRefreshTimeline={setRefreshTimeline}
           />
 
-<div className="infite-scroll-container">
-  <InfiniteScroll
-    pageStart={0}
-    loadMore={requestGetPosts}
-    hasMore={loadMore}
-    loader={
-      <div className="loader" key={page}>
-        <TailSpin
-          ariaLabel="loading-indicator"
-          height="50"
-          width="50"
-          color="grey"
-        />
-        <p className="loader-text">Loading more posts...</p>
-      </div>
-    }
-  >
-    {renderPosts(posts)}
-  </InfiniteScroll>
-</div>
-</div>
-<div className="trending-virtual-container">
-<div className="trending-container">
+          <div className="infite-scroll-container">
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={requestGetPosts}
+              hasMore={loadMore}
+              loader={
+                <div className="loader" key={page}>
+                  <TailSpin
+                    ariaLabel="loading-indicator"
+                    height="50"
+                    width="50"
+                    color="grey"
+                  />
+                  <p className="loader-text">Loading more posts...</p>
+                </div>
+              }
+            >
+              {renderPosts(posts)}
+            </InfiniteScroll>
+          </div>
+        </div>
+        <div className="trending-virtual-container">
+          <div className="trending-container">
 
-</div>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
     </Div>
   );
 
 }
+
+const Tranding = styled.div`
+
+width: 301px;
+height: 406px;
+
+
+background: #171717;
+border-radius: 16px;
+
+div {
+
+width: 300px;
+height: 0px;
+top: 22px;
+border: 1px solid #484848;
+}
+
+h1 {
+ 
+width: 127px;
+height: 64px;
+
+margin-left: 16px;
+margin-top: 9px;
+font-family: 'Oswald';
+font-style: normal;
+font-weight: 700;
+font-size: 27px;
+line-height: 40px;
+color: #FFFFFF;
+}
+p {
+  color: #FFFFFF;
+  margin-left: 16px;
+  
+}
+`
 
 const Div = styled.div`
   overflow-x: hidden;
@@ -216,7 +258,7 @@ const Div = styled.div`
     margin-top: 30px;
   }
   .message {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 400;
     font-size: 22px;
@@ -248,7 +290,7 @@ const Div = styled.div`
   }
   .loader-text {
     margin-top: 10px;
-    font-family: "Lato";
+    font-family: "Oswald";
     font-size: 22px;
     line-height: 26px;
     letter-spacing: 0.05em;

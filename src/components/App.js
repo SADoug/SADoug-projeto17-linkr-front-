@@ -15,8 +15,9 @@ function App() {
   const [logo, setLogo] = useState("");
   const [name, setName] = useState("");
 
+
   return (
-    <UserContext.Provider value={{ token, setToken, userImage, setUserImage, data, setData, logo, setLogo, name, setName }}>
+    <UserContext.Provider value={{  token, setToken, userImage, setUserImage, data, setData, logo, setLogo, name, setName }}>
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<SigninScreen />} />
