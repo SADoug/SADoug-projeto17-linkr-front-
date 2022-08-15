@@ -26,37 +26,10 @@ export default function Timeline() {
   const navigate = useNavigate();
 
     const URL = "http://localhost:4000/timeline";
-    const localToken = JSON.parse(localStorage.getItem("tokenUser"));
+    const localToken = localStorage.getItem("tokenUser");
   
-    useEffect(() => {
-      if (!token.token) {
-        if (!localToken) {
-          navigate("/");
-        } else {
-          setToken({ ...localToken });
-        }
-      } else {
-        requestGetPosts();
-      }
-    }, [refreshTimeline, token, setToken, localToken, navigate, requestGetPosts]);
-
-    useInterval(() => {
-      if (!token.token) {
-        if (!localToken) {
-          navigate("/");
-        } else {
-          setToken({ ...localToken });
-        }
-      } else {
-        requestGetNewPosts();
-      }
-    }, 15000);
-
-    useEffect(() => {
-      if (!!token.token) {
-        request();
-      }
-    }, [refresh, token.token]);
+ 
+   
 
     async function request() {
       try {

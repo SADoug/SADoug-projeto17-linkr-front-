@@ -11,9 +11,7 @@ export default function PublishPost(props) {
     const [text, setText] = useState("");
     const [publishLoading, setPublishLoading] = useState(false);
 
-    const tokenJwt = !token.token
-    ? JSON.parse(localStorage.getItem("token"))
-    : token;
+    const tokenJwt = localStorage.getItem("token");
   const URL = "http://localhost:4000/posts";
 
   function sendPost(event) {
@@ -25,7 +23,7 @@ export default function PublishPost(props) {
     };
     const promise = axios.post(`${URL}posts`, post, {
         headers: {
-          Authorization: `Bearer ${tokenJwt.token}`,
+          Authorization: `Bearer ${tokenJwt}`,
         },
       });
       promise.then((response) => {

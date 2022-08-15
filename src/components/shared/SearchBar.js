@@ -55,7 +55,7 @@ export default function SearchBar(){
               />
             </div>
           </SearchBarDiv>
-          {searchResults.length > 0 ? (
+          {searchResults? (
             <ResultContainer>
               {searchResults.map((result, index) => {
                 return (
