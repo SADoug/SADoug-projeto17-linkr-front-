@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
 export default function PostCard(props) {
+  console.log(props)
     const {
         link,
         titleLink,
@@ -48,7 +49,7 @@ export default function PostCard(props) {
         setLoading(true);
         try {
             const config = {
-                headers: { Authorization: `Bearer ${JSON.parse(tokenObject).token}` },
+                headers: { Authorization: `Bearer ${tokenObject}` },
             };
             const response = await axios.delete(`${URL}posts/${id}`, config);
             setExclude(false);
@@ -176,7 +177,7 @@ export default function PostCard(props) {
                         >
                             {id}
                         </p>
-                        {/* <p className="description">
+                        <p className="description">
                             {editing(
                                 <textarea
                                     disabled={loading}
@@ -188,7 +189,7 @@ export default function PostCard(props) {
                                     }}
                                     onKeyDown={verifyKey}
                                 />
-                            )} */}
+                            )}
                         </p>
                         <div className="link-metadata" onClick={() => redirectToLink()}>
                             <div className="container-title-description">

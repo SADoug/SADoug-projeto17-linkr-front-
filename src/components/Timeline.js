@@ -13,7 +13,7 @@ import UserContext from "../contexts/Usercontext";
 
 export default function Timeline() {
   const [refreshTimeline, setRefreshTimeline] = useState(false);
-  const [posts, setPosts] = useState(["initial"]);
+  const [posts, setPosts] = useState();
   const [newPosts, setNewPosts] = useState([]);
   const [qtyNewPosts, setQtyNewPosts] = useState(0);
   const { token, setToken } = useContext(UserContext);
@@ -25,49 +25,30 @@ export default function Timeline() {
 
   const navigate = useNavigate();
 
-  const URL = "http://localhost:4000/timeline";
   const localToken = localStorage.getItem("token");
 
-
-  async function request() {
-    try {
-      const config = { headers: { Authorization: `Bearer ${localToken}` } };
-      const response = await axios.get(`${URL}posts?page=1`, config);
-
-      setPosts(response.data);
-
-    } catch (e) {
-      setPosts(["error"]);
-      console.log(e);
-    }
-  }
-
+  useEffect(() => {
+    requestGetPosts();}
+    , []);
+    
   async function requestGetPosts() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
-      const response = await axios.get(`http://localhost:4000/posts?page=${page}`, config);
-
-      if (posts[0] === "initial") {
-        setPosts(response.data);
-      } else {
-        setPosts([...posts, ...response.data]);
-      }
-
+      const response = await axios.get(`http://localhost:4000/posts`, config);
+        setPosts(...response.data);
+        console.log(response.data)
       if (response.data.length === 0) {
         setLoadMore(false);
       }
-      setPage(page + 1);
+   
     } catch (e) {
       setPosts(["error"]);
       console.log(e, "requestGetPosts");
     }
   }
-  
-    useEffect(() => {
-        requestGetPosts();}
-    , []);
-  function renderPosts(posts) {
+    function renderPosts(posts) {
+    console.log("######",posts)
     if (posts.length === 0) {
       return (
         <div className="message-container">
@@ -85,12 +66,13 @@ export default function Timeline() {
         </div>
       );
     }
-
-    return posts.map((post, index) => {
-      return (
-        <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
-      );
-    });
+   if (posts){
+    //  return posts.map((post, index) => {
+    //    return (
+    //      <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
+    //    );
+    //  });
+   }
   }
 
   useEffect(() => {
