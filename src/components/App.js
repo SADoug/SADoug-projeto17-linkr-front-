@@ -1,29 +1,31 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import UserContext from "./Usecontext";
+import styled from 'styled-components';
+import { useState } from "react";
+import UserContext from "../contexts/Usercontext";
 import SignupScreen from "./Signup";
 import SigninScreen from "./Login";
-import TelaDelete from "./DeleteTest";
 import Timeline from "./Timeline";
+import UserTimelineScreen from './UserTimelineScreen'
 
 function App() {
-  const tokenStorageString = localStorage.getItem("user");
-  const tokenStorage = JSON.parse(tokenStorageString);
-  const [token, setToken] = useState(tokenStorage);
 
   const [token, setToken] = useState("");
+  const [userImage, setUserImage] = useState("");
   const [data, setData] = useState("");
   const [logo, setLogo] = useState("");
   const [name, setName] = useState("");
 
   return (
-    <UserContext.Provider value={{ token, setToken, data, setData, logo, setLogo, name, setName }}>
+    <UserContext.Provider value={{ token, setToken, userImage, setUserImage, data, setData, logo, setLogo, name, setName }}>
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<SigninScreen />} />
             <Route path="/sign-up" element={<SignupScreen />} />
             <Route path="/timeline" element={<Timeline />} />
+            <Route path="/user/:id" element ={<UserTimelineScreen />}></Route>
         </Routes>
     </BrowserRouter>
+    <AppContainer/>
 </UserContext.Provider>
   )
 }
