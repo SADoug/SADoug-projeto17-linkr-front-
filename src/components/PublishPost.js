@@ -1,3 +1,4 @@
+
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -12,9 +13,7 @@ export default function PublishPost(props) {
     const [publishLoading, setPublishLoading] = useState(false);
 
     const tokenJwt = localStorage.getItem("token");
-    console.log(tokenJwt);
-   
-    const URL = "http://localhost:4000/posts";
+  const URL = "http://localhost:4000/";
 
   function sendPost(event) {
     event.preventDefault();
@@ -93,7 +92,7 @@ export default function PublishPost(props) {
     box-shadow: 0px 4px 4px 0px #00000040;
     label {
       color: #707070;
-      font-family: "Lato", normal;
+      font-family: "Oswald", normal;
       font-weight: 300;
       font-size: 17px;
       line-height: 20px;
@@ -112,7 +111,7 @@ export default function PublishPost(props) {
       padding-left: 11px;
       border-radius: 5px;
       border: none;
-      font-family: "Lato", normal;
+      font-family: "Oswald", normal;
       font-weight: 300;
       font-size: 13px;
     }
@@ -175,4 +174,4 @@ export default function PublishPost(props) {
     display: flex;
     flex-direction: column;
     align-items: center;
-  `;
+`

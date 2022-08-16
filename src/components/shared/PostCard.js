@@ -9,13 +9,13 @@ import ReactTooltip from "react-tooltip";
 
 export default function PostCard(props) {
     const {
-        link,
-        titleLink,
+        shared_url,
+        message,
         imageLink,
         descriptionLink,
         id,
-        idPost,
-        idUser,
+        post_id,
+        user_id,
     } = props.post;
 
     const [loading, setLoading] = useState(false);
@@ -170,10 +170,10 @@ export default function PostCard(props) {
                         <p
                             className="username"
                             onClick={() =>
-                                navigate(`/user/${idPost}`)
+                                navigate(`/user/${id}`)
                             }
                         >
-                            {idPost}
+                            {post_id}
                         </p>
                         <p className="description">
                             {editing(

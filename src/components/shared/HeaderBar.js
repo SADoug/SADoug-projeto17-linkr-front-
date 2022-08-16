@@ -9,19 +9,18 @@ import axios from "axios";
 
 
 export default function HeaderBar() {
-    const { token, setToken, userImage, setUserImage, setUsername } =
-    useContext(UserContext);
+    const { token, setToken, userImage, setUserImage, setName } = useContext(UserContext);
     const [refresh, setRefresh] = useState({ token: "" });
     const [logout, setLogout] = useState(false);
     const navigate = useNavigate();
-    const URL = "https://localhost:4000/";
+    const URL = "http://localhost:4000/";
 
     const localToken = localStorage.getItem("token");
-
+    console.log(localToken)
     useEffect(() => {
         if (!localToken && !userImage) {
           if (!localToken) {
-            navigate("/");
+            
             console.log("teste");
           } else {
             setToken({ ...localToken });
@@ -34,22 +33,27 @@ export default function HeaderBar() {
             },
           });
           promise.then(({ data }) => {
-            setUserImage(data.picture);
-            setUsername(data.username);
+            console.log("HEADBAR GET USER", data)
+            setUserImage(data.profile_image);
+            setName(data.username);
           });
           promise.catch((error) => {
+            console.log("HEADBAR GET USER ERROR")
             console.log(error.response.data);
             localStorage.removeItem("token");
-            navigate("/");
+           
           });
         }
-      }, [refresh, localToken, navigate, setToken, setUserImage, setUsername, localToken, userImage]);
+      }, [refresh, localToken, navigate, setToken, setUserImage, setName, localToken, userImage]);
 
         const toLogout = async () => {
         localStorage.removeItem("userInfo");
         localStorage.removeItem("token");
         navigate("/");
       };
+
+    console.log(userImage)
+
 
       return (
         <Div logout={logout}>
@@ -106,7 +110,7 @@ const Div = styled.div`
   left: 0;
   z-index: 3;
   p {
-    font-family: "Passion One";
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 700;
     font-size: 45px;
@@ -154,7 +158,7 @@ const Div = styled.div`
       border-radius: 0 0 0 20px;
       p {
         font-size: 17px;
-        font-family: "Lato";
+        font-family: "Oswald";
       }
     }
   }

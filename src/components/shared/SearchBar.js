@@ -1,3 +1,4 @@
+
 import styled from 'styled-components';
 import { AiOutlineSearch } from "react-icons/ai";
 import { DebounceInput } from "react-debounce-input";
@@ -112,7 +113,7 @@ export default function SearchBar(){
     @media (min-width: 600px) {
       li {
         p {
-          font-family: "Lato";
+          font-family: "Oswald";
           font-size: 19px;
           font-weight: 400;
           line-height: 23px;
@@ -135,7 +136,7 @@ export default function SearchBar(){
       border-radius: 8px;
       padding-left: 16px;
       padding-right: 50px;
-      font-family: "Lato";
+      font-family: "Oswald";
       font-style: normal;
       font-weight: 400;
       font-size: 17px;
@@ -159,4 +160,4 @@ export default function SearchBar(){
         color: black;
       }
     }
-  `;
+`

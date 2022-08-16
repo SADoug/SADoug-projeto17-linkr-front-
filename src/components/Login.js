@@ -6,8 +6,8 @@ import { useContext } from "react";
 import UserContext from "../contexts/Usercontext";
 
 export default function SigninScreen() {
-  const [email, setEmail] = React.useState("malalayz@gmail.com");
-  const [password, setPassword] = React.useState("malalayz123");
+  const [email, setEmail] = React.useState("douglas@douglas.com");
+  const [password, setPassword] = React.useState("12354678");
   const navigate = useNavigate();
   const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
@@ -23,9 +23,9 @@ export default function SigninScreen() {
       console.log(data);
       setLogo(data.profileImage)
       setName(data.name)
-      navigate("/timeline")
       let token = localStorage.setItem("token", data.token)
       setToken(token)
+      navigate("/timeline")
     })
     promise.catch(err => {
       alert("Invalid data")
