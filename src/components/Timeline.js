@@ -2,42 +2,40 @@ import styled from "styled-components";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
 import { TailSpin } from "react-loader-spinner";
-import { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
 import PostCard from "./shared/PostCard";
 import SearchBar from "./shared/SearchBar";
-import UserContext from "../contexts/Usercontext";
+
 
 export default function Timeline() {
   const [refreshTimeline, setRefreshTimeline] = useState(false);
-  const [posts, setPosts] = useState();
-  const [newPosts, setNewPosts] = useState([]);
-  const [qtyNewPosts, setQtyNewPosts] = useState(0);
-  const { token, setToken } = useContext(UserContext);
+  const [posts, setPosts] = useState(["initial"]);
   const [refresh, setRefresh] = useState([]);
   const [user, setUser] = useState({});
   const [page, setPage] = useState(1);
   const [loadMore, setLoadMore] = useState(true);
   const [Hashtags, setHashtags] = useState("");
 
-  const navigate = useNavigate();
-
   const localToken = localStorage.getItem("token");
-
+  
   useEffect(() => {
-    requestGetPosts();}
-    , []);
+    requestGetPosts();
+  }, [refreshTimeline]);
+  
     
   async function requestGetPosts() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
       const response = await axios.get(`http://localhost:4000/posts`, config);
-        setPosts(...response.data);
-        console.log(response.data)
+      if (posts[0] === "initial") {
+        setPosts(response.data);
+      } else {
+        setPosts([...posts, ...response.data]);
+      }
       if (response.data.length === 0) {
         setLoadMore(false);
       }
@@ -48,7 +46,6 @@ export default function Timeline() {
     }
   }
     function renderPosts(posts) {
-    console.log("######",posts)
     if (posts.length === 0) {
       return (
         <div className="message-container">
@@ -67,12 +64,12 @@ export default function Timeline() {
       );
     }
    if (posts){
-    //  return posts.map((post, index) => {
-    //    return (
-    //      <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
-    //    );
-    //  });
-   }
+     return posts.map((post, index) => {
+       return (
+         <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
+       );
+     });
+    }
   }
 
   useEffect(() => {

@@ -8,197 +8,205 @@ import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 
 export default function PostCard(props) {
-    const {
-        shared_url,
-        message,
-        id,
-        post_id,
-        user_id,
-    } = props.post;
+  const {
+    shared_url,
+    message,
+    id,
+    post_id,
+    user_id,
+  } = props.post;
 
-    const [loading, setLoading] = useState(false);
-    const [editing, setEditing] = useState(false);
-    const [descriptionEdit, setDescriptionEdit] = useState("");
-    const [description, setDescription] = useState(props.post.description);
-    const { user, refresh } = props;
-    const [exclude, setExclude] = useState(false);
-    const loader = (
-        <ThreeDots
-            type="Puff"
-            color="#FFFFFF"
-            height={40}
-            width={40}
-            timeout={3000}
-        />
-    );
-    const localToken = localStorage.getItem("token");
-    const navigate = useNavigate();
-    const URL = "https://localhost:4000/";
-    const inputRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [descriptionEdit, setDescriptionEdit] = useState("");
+  const [description, setDescription] = useState(props.post.description);
+  const { user, refresh } = props;
+  const [exclude, setExclude] = useState(false);
+  const loader = (
+    <ThreeDots
+      type="Puff"
+      color="#FFFFFF"
+      height={40}
+      width={40}
+      timeout={3000}
+    />
+  );
+  const localToken = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const URL = "https://localhost:4000/";
+  const inputRef = useRef(null);
 
 
-    function redirectToLink() {
-        window.open(shared_url, "_blank");
+  function redirectToLink() {
+    window.open(shared_url, "_blank");
+  }
+
+  const deletePost = async () => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${(localToken)}` },
+      };
+      const response = await axios.delete(`${URL}posts/${id}`, config);
+      setExclude(false);
+      console.log(response);
+      refresh([]);
+    } catch (e) {
+      alert("Não foi possível excluir o post!");
+      setExclude(false);
+      console.log(e);
     }
+    setLoading(false);
+  };
 
-    const deletePost = async () => {
-        setLoading(true);
-        try {
-            const config = {
-                headers: { Authorization: `Bearer ${(localToken)}` },
-            };
-            const response = await axios.delete(`${URL}posts/${id}`, config);
-            setExclude(false);
-            console.log(response);
-            refresh([]);
-        } catch (e) {
-            alert("Não foi possível excluir o post!");
-            setExclude(false);
-            console.log(e);
-        }
-        setLoading(false);
-    };
+  const openEdit = () => {
+    setEditing(true);
+    setDescriptionEdit(description);
+  };
 
-    const openEdit = () => {
-        setEditing(true);
-        setDescriptionEdit(description);
-    };
+  useEffect(() => {
+    if (editing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editing]);
 
-    useEffect(() => {
-        if (editing && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
+  const cancelEdit = () => {
+    setEditing(false);
+  };
 
-    const cancelEdit = () => {
-        setEditing(false);
-    };
+  const sendEdit = async () => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${(localToken)}` },
+      };
+      await axios.post(
+        `${URL}posts/${id}/edit`,
+        { description: descriptionEdit },
+        config
+      );
+      setDescription(descriptionEdit);
+      setEditing(false);
+      setLoading(false);
+    } catch (e) {
+      console.log(e.message);
+      alert("Não foi possível salvar as alterações!");
+      setLoading(false);
+    }
+  };
 
-    const sendEdit = async () => {
-        setLoading(true);
-        try {
-            const config = {
-                headers: { Authorization: `Bearer ${(localToken)}` },
-            };
-            await axios.post(
-                `${URL}posts/${id}/edit`,
-                { description: descriptionEdit },
-                config
-            );
-            setDescription(descriptionEdit);
-            setEditing(false);
-            setLoading(false);
-        } catch (e) {
-            console.log(e.message);
-            alert("Não foi possível salvar as alterações!");
-            setLoading(false);
-        }
-    };
+  const verifyKey = (e) => {
+    switch (e.keyCode) {
+      case 13:
+        sendEdit();
+        e.preventDefault();
+        break;
 
-    const verifyKey = (e) => {
-        switch (e.keyCode) {
-            case 13:
-                sendEdit();
-                e.preventDefault();
-                break;
+      case 27:
+        cancelEdit();
+        e.preventDefault();
+        break;
 
-            case 27:
-                cancelEdit();
-                e.preventDefault();
-                break;
+      default:
+        break;
+    }
+  };
 
-            default:
-                break;
-        }
-    };
+  return (
+    <>
+      {exclude ? (
+        <DeleteConfirm>
+          <div className="confirm-container">
+            <h2>Are you sure you want to delete this post?</h2>
+            <div>
+              <button
+                className="cancel"
+                onClick={() => {
+                  setExclude(false);
+                }}
+              >
+                No, go back
+              </button>
+              <button className="confirm" onClick={deletePost}>
+                {loading ? loader : "Yes, delete it"}
+              </button>
+            </div>
+          </div>
+        </DeleteConfirm>
+      ) : (
+        <></>
+      )}
 
-    return (
-        <>
-            {exclude ? (
-                <DeleteConfirm>
-                    <div className="confirm-container">
-                        <h2>Are you sure you want to delete this post?</h2>
-                        <div>
-                            <button
-                                className="cancel"
-                                onClick={() => {
-                                    setExclude(false);
-                                }}
-                            >
-                                No, go back
-                            </button>
-                            <button className="confirm" onClick={deletePost}>
-                                {loading ? loader : "Yes, delete it"}
-                            </button>
-                        </div>
-                    </div>
-                </DeleteConfirm>
+      <Div retweet={post_id}>
+        <div className="post-container">
+          <div className="right-container">
+            <ReactTooltip />
+          </div>
+          <div className="left-container">
+            {user_id === user ? (
+              <>
+                {post_id ? (
+                  <></>
+                ) : (
+                  <TiPencil
+                    className="pencil-icon"
+                    onClick={() => {
+                      editing ? cancelEdit() : openEdit();
+                    }}
+                  />
+                )}
+                <FaTrash
+                  className="trash-icon"
+                  onClick={() => {
+                    setExclude(true);
+                  }}
+                />
+              </>
             ) : (
-                <></>
+              <></>
             )}
-
-            <Div retweet={post_id}>
-                <div className="post-container">
-                    <div className="right-container">
-                        <ReactTooltip />
-                    </div>
-                    <div className="left-container">
-                        {user_id === user ? (
-                            <>
-                                {post_id ? (
-                                    <></>
-                                ) : (
-                                    <TiPencil
-                                        className="pencil-icon"
-                                        onClick={() => {
-                                            editing ? cancelEdit() : openEdit();
-                                        }}
-                                    />
-                                )}
-                                <FaTrash
-                                    className="trash-icon"
-                                    onClick={() => {
-                                        setExclude(true);
-                                    }}
-                                />
-                            </>
-                        ) : (
-                            <></>
-                        )}
-                        <p
-                            className="username"
-                            onClick={() =>
-                                navigate(`/user/${id}`)
-                            }
-                        >
-                            {post_id}
-                        </p>
-                        <p className="description">
-                            {editing(
-                                <textarea
-                                    disabled={loading}
-                                    ref={inputRef}
-                                    className="description-edit"
-                                    value={descriptionEdit}
-                                    onChange={(e) => {
-                                        setDescriptionEdit(e.target.value);
-                                    }}
-                                    onKeyDown={verifyKey}
-                                />
-                            )}
-                        </p>
-                        <div className="link-metadata" onClick={() => redirectToLink()}>
-                            <div className="container-title-description">
-                                <p className="link-title">{shared_url}</p>
-                                <p className="link-description">{message}</p>
-                                <p className="link-url">{shared_url}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Div>
-        </>
-    );
+            <p
+              className="username"
+              onClick={() =>
+                navigate(`/user/${id}`)
+              }
+            >
+              {post_id}
+            </p>
+            <p className="description">
+              {editing ? (
+                <textarea
+                  disabled={loading}
+                  ref={inputRef}
+                  className="description-edit"
+                  value={descriptionEdit}
+                  onChange={(e) => {
+                    setDescriptionEdit(e.target.value);
+                  }}
+                  onKeyDown={verifyKey}
+                />
+              ) : (
+                <>
+                  Post{(hashtag) =>
+                    navigate(`/hashtag/`)
+                  }
+                
+                  {description}
+                </>
+              )}
+            </p>
+            <div className="link-metadata" onClick={() => redirectToLink()}>
+              <div className="container-title-description">
+                <p className="link-title">{shared_url}</p>
+                <p className="link-description">{message}</p>
+                <p className="link-url">{shared_url}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Div>
+    </>
+  );
 }
 
 const DeleteConfirm = styled.div`
