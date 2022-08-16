@@ -11,8 +11,6 @@ export default function PostCard(props) {
     const {
         shared_url,
         message,
-        imageLink,
-        descriptionLink,
         id,
         post_id,
         user_id,
@@ -40,7 +38,7 @@ export default function PostCard(props) {
 
 
     function redirectToLink() {
-        window.open(link, "_blank");
+        window.open(shared_url, "_blank");
     }
 
     const deletePost = async () => {
@@ -139,15 +137,15 @@ export default function PostCard(props) {
                 <></>
             )}
 
-            <Div retweet={idPost}>
+            <Div retweet={post_id}>
                 <div className="post-container">
                     <div className="right-container">
                         <ReactTooltip />
                     </div>
                     <div className="left-container">
-                        {idUser === user ? (
+                        {user_id === user ? (
                             <>
-                                {idPost ? (
+                                {post_id ? (
                                     <></>
                                 ) : (
                                     <TiPencil
@@ -191,11 +189,10 @@ export default function PostCard(props) {
                         </p>
                         <div className="link-metadata" onClick={() => redirectToLink()}>
                             <div className="container-title-description">
-                                <p className="link-title">{titleLink}</p>
-                                <p className="link-description">{descriptionLink}</p>
-                                <p className="link-url">{link}</p>
+                                <p className="link-title">{shared_url}</p>
+                                <p className="link-description">{message}</p>
+                                <p className="link-url">{shared_url}</p>
                             </div>
-                            <img src={imageLink} alt="Article"></img>
                         </div>
                     </div>
                 </div>
