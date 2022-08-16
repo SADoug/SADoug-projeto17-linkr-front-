@@ -187,7 +187,8 @@ export default function PostCard(props) {
                 />
               ) : (
                 <>
-                  Post{(hashtag) =>
+                  {message}
+                  {(hashtag) =>
                     navigate(`/hashtag/`)
                   }
                 
@@ -197,8 +198,8 @@ export default function PostCard(props) {
             </p>
             <div className="link-metadata" onClick={() => redirectToLink()}>
               <div className="container-title-description">
-                <p className="link-title">{shared_url}</p>
-                <p className="link-description">{message}</p>
+                <p className="link-title">{message}</p>
+                <p className="link-description">{shared_url}</p>
                 <p className="link-url">{shared_url}</p>
               </div>
             </div>
