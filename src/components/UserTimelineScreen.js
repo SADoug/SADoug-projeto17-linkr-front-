@@ -21,7 +21,7 @@ export default function UserTimelineScreen() {
   
   const navigate = useNavigate();
 
-  const URL = "http://localhost:4000/";
+  const URL = "http://localhost:4001/";
   const localToken = localStorage.getItem("token");
 
   useEffect(() => {

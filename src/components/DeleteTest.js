@@ -10,7 +10,7 @@ export default function TelaDelete() {
   const [hashtags, setHashtags] = React.useState();
   
 	useEffect(() => {
-    const URL = "http://localhost:4000/hashtags";
+    const URL = "http://localhost:4001/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
     

@@ -47,7 +47,7 @@ export default function PostCard(props) {
   );
   const localToken = localStorage.getItem("token");
   const navigate = useNavigate();
-  const URL = "https://localhost:4000/";
+  const URL = "https://localhost:4001/";
   const inputRef = useRef(null);
 
 

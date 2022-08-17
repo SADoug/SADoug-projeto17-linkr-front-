@@ -16,7 +16,7 @@ export default function SearchBar(){
 
     const navigate = useNavigate();
     const localToken = localStorage.getItem("token");
-    const URL = "http://localhost:4000/";
+    const URL = "http://localhost:4001/";
 
     useEffect(() => {
         if (!!search) {

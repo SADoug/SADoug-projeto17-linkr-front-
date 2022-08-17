@@ -20,7 +20,7 @@ export default function Timeline() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  const URL = "https://localhost:4000/";
+  const URL = "https://localhost:4001/";
 
   useEffect(() => {
     requestGetPosts();
@@ -50,7 +50,7 @@ export default function Timeline() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
-      const response = await axios.get(`http://localhost:4000/posts`, config);
+      const response = await axios.get(`http://localhost:4001/posts`, config);
       if (posts[0] === "initial") {
         setPosts(response.data);
       } else {
@@ -94,7 +94,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "http://localhost:4000/hashtags";
+    const URL = "http://localhost:4001/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
