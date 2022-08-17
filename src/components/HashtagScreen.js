@@ -8,10 +8,11 @@ import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
 import PostCard from "./shared/PostCard";
 import SearchBar from "./shared/SearchBar";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 
-export default function Timeline() {
+export default function HashgtagScreen() {
+
   const [refreshTimeline, setRefreshTimeline] = useState(false);
   const [posts, setPosts] = useState(["initial"]);
   const [refresh, setRefresh] = useState([]);
@@ -104,17 +105,6 @@ export default function Timeline() {
   }, []);
   console.log("HASHTAGS", Hashtags)
 
-  async function hashtagpage(name) {
-    try {
-      Navigate("http://localhost:4001/hashtag/name")
-  
-    } catch (e) {
-      
-      console.log(e, "requestGetPosts");
-    }
-  }
-
-
   return posts[0] === "initial" ? (
     <Div>
       <HeaderBar />
@@ -125,11 +115,7 @@ export default function Timeline() {
           </div>
 
           <h1>timeline</h1>
-          <PublishPost
-            refreshTimeline={refreshTimeline}
-            setRefreshTimeline={setRefreshTimeline}
-            refreshpage = {refreshpage}
-          />
+          
           <div className="message-container">
             <p className="message">Loading . . .</p>
           </div>
@@ -140,7 +126,7 @@ export default function Timeline() {
         <div>
         </div>
           {Hashtags && (
-            Hashtags.map(hashtags =>  <a key={hashtags.id} onClick={hashtagpage}># {hashtags.name}</a>)
+            Hashtags.map(hashtags =>  <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
           )}
           </Tranding>
         </div>
@@ -156,11 +142,7 @@ export default function Timeline() {
           </div>
 
           <h1>timeline</h1>
-          <PublishPost
-            refreshTimeline={refreshTimeline}
-            setRefreshTimeline={setRefreshTimeline}
-            refreshpage = {refreshpage}
-          />
+       
 
           <div className="infite-scroll-container">
             <InfiniteScroll
@@ -191,7 +173,7 @@ export default function Timeline() {
         </div>
         <div className= "hashtags">
           {Hashtags && (
-            Hashtags.map(hashtags => <a key={hashtags.id} onClick={hashtagpage()} onclickc># {hashtags.name}</a>)
+            Hashtags.map(hashtags => <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
           )}
           </div>
           </Tranding>

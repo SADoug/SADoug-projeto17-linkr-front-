@@ -280,8 +280,6 @@ export default function PostCard(props) {
                   {(hashtag) =>
                     navigate(`/hashtag/`)
                   }
-
-                  {message}
                 </>
               )}
             </p>

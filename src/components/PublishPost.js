@@ -3,10 +3,11 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import UserContext from "../contexts/Usercontext";
+import { Navigate } from "react-router-dom";
 
 export default function PublishPost(props) {
  
-    let { setRefreshTimeline, refreshTimeline } = props;
+    let { setRefreshTimeline, refreshTimeline,  refreshpage } = props;
 
     const { token, userImage } = useContext(UserContext);
     const [url, setUrl] = useState("");
@@ -28,12 +29,14 @@ export default function PublishPost(props) {
           Authorization: `Bearer ${tokenJwt}`,
         },
       });
+      
       promise.then((response) => {
         setUrl("");
         setText("");
         const newRefreshTimeline = !refreshTimeline;
         setRefreshTimeline(newRefreshTimeline);
         setPublishLoading(false);
+        
       });
       promise.catch((error) => {
         alert("Houve um erro ao publicar seu link");
@@ -42,6 +45,7 @@ export default function PublishPost(props) {
         setPublishLoading(false);
       });
     }
+  
 
     return (
         <PublishPostContainer>

@@ -5,7 +5,8 @@ import UserContext from "../contexts/Usercontext";
 import SignupScreen from "./Signup";
 import SigninScreen from "./Login";
 import Timeline from "./Timeline";
-import UserTimelineScreen from './UserTimelineScreen'
+import UserTimelineScreen from "./UserTimelineScreen"
+import HashgtagScreen from './HashtagScreen'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/sign-up" element={<SignupScreen />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="/user/:id" element ={<UserTimelineScreen />}></Route>
+            <Route path="/hashtag/:id" element ={<HashgtagScreen />}></Route>
         </Routes>
     </BrowserRouter>
     <AppContainer/>
