@@ -1,21 +1,36 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from 'styled-components';
-import Header from './Header/index';
+import { useState } from "react";
+import UserContext from "../contexts/Usercontext";
+import SignupScreen from "./Signup";
+import SigninScreen from "./Login";
+import Timeline from "./Timeline";
+import UserTimelineScreen from "./UserTimelineScreen"
+import HashgtagScreen from './HashtagScreen'
 
 function App() {
 
+  const [token, setToken] = useState("");
+  const [userImage, setUserImage] = useState("");
+  const [data, setData] = useState("");
+  const [logo, setLogo] = useState("");
+  const [name, setName] = useState("");
+
+
   return (
-    <AppContainer>
-       <Header />
+    <UserContext.Provider value={{  token, setToken, userImage, setUserImage, data, setData, logo, setLogo, name, setName }}>
     <BrowserRouter>
-      <Routes>
-        <Route >
-          <Route path='/user/:id'/>
-        </Route>
-      </Routes>
+        <Routes>
+            <Route path="/" element={<SigninScreen />} />
+            <Route path="/sign-up" element={<SignupScreen />} />
+            <Route path="/timeline" element={<Timeline />} />
+            <Route path="/user/:id" element ={<UserTimelineScreen />}></Route>
+            <Route path="/hashtag/:id" element ={<HashgtagScreen />}></Route>
+        </Routes>
     </BrowserRouter>
-  </AppContainer>
-  );
+    <AppContainer/>
+</UserContext.Provider>
+  )
 }
 
 export default App;
