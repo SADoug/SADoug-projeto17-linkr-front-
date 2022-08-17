@@ -5,15 +5,16 @@ import styled from "styled-components";
 import UserContext from "../contexts/Usercontext";
 
 export default function PublishPost(props) {
+ 
     let { setRefreshTimeline, refreshTimeline } = props;
-  
+
     const { token, userImage } = useContext(UserContext);
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [publishLoading, setPublishLoading] = useState(false);
 
     const tokenJwt = localStorage.getItem("token");
-  const URL = "http://localhost:4000/";
+  const URL = "http://localhost:4001/";
 
   function sendPost(event) {
     event.preventDefault();

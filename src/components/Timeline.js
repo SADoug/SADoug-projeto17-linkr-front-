@@ -20,17 +20,37 @@ export default function Timeline() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  
+  const URL = "https://localhost:4001/";
+
   useEffect(() => {
     requestGetPosts();
   }, [refreshTimeline]);
+
+  useEffect(() => {
+    if (!localToken) {
+      request();
+    }
+  }, [refresh]);
   
-    
+  
+  async function request() {
+    try {
+      const config = { headers: { Authorization: `Bearer ${localToken}` } };
+      const response = await axios.get(`${URL}posts`, config);
+      const user = await axios.get(`${URL}userToken`, config);
+      setPosts(response.data);
+      setUser(user.data);
+    } catch (e) {
+      setPosts(["error"]);
+      console.log(e);
+    }
+  }
+
   async function requestGetPosts() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
-      const response = await axios.get(`http://localhost:4000/posts`, config);
+      const response = await axios.get(`http://localhost:4001/posts`, config);
       if (posts[0] === "initial") {
         setPosts(response.data);
       } else {
@@ -39,13 +59,14 @@ export default function Timeline() {
       if (response.data.length === 0) {
         setLoadMore(false);
       }
-   
+      setPage(page + 1);
     } catch (e) {
       setPosts(["error"]);
       console.log(e, "requestGetPosts");
     }
   }
-    function renderPosts(posts) {
+
+  function renderPosts(posts) {
     if (posts.length === 0) {
       return (
         <div className="message-container">
@@ -73,7 +94,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "http://localhost:4000/hashtags";
+    const URL = "http://localhost:4001/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
@@ -112,13 +133,11 @@ export default function Timeline() {
             Hashtags.map(hashtags => <p key={hashtags.id}># {hashtags.name}</p>)
           )}
           </Tranding>
-
         </div>
       </div>
     </Div>
   ) : (
     <Div>
-
       <HeaderBar />
       <div className="timeline-screen-container">
         <div className="timeline-container">

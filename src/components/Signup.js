@@ -14,7 +14,7 @@ export default function SignupScreen() {
     const navigate = useNavigate();
 
     function cadastrar() {
-        const URL = "http://localhost:4000/signup";
+        const URL = "http://localhost:4001/signup";
         ;
         const promise = axios.post(URL, {
             email: email,
