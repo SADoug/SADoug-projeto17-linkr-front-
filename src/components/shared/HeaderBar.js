@@ -9,7 +9,7 @@ import axios from "axios";
 
 
 export default function HeaderBar() {
-    const { token, setToken, userImage, setUserImage, setName } = useContext(UserContext);
+    const { token, profile_image, setToken, userImage, setUserImage, setName } = useContext(UserContext);
     const [refresh, setRefresh] = useState({ token: "" });
     const [logout, setLogout] = useState(false);
     const navigate = useNavigate();
@@ -52,8 +52,6 @@ export default function HeaderBar() {
         navigate("/");
       };
 
-    console.log(userImage)
-
 
       return (
         <Div logout={logout}>
@@ -75,7 +73,7 @@ export default function HeaderBar() {
               </div>
             </IconContext.Provider>
     
-            <img src={userImage} alt="User"></img>
+            <img src={profile_image} alt="User"></img>
             {logout ? (
               <div className="logout-container">
                 <p
