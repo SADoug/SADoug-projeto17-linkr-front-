@@ -7,7 +7,7 @@ import UserContext from "../contexts/Usercontext";
 export default function PublishPost(props) {
     let { setRefreshTimeline, refreshTimeline } = props;
   
-    const { token, userImage } = useContext(UserContext);
+    const { token, profile_picture } = useContext(UserContext);
     const [url, setUrl] = useState("");
     const [text, setText] = useState("");
     const [publishLoading, setPublishLoading] = useState(false);
@@ -44,7 +44,7 @@ export default function PublishPost(props) {
 
     return (
         <PublishPostContainer>
-          <img className="user-image" src={userImage} alt="userImage" />
+          <img className="user-image" src={profile_picture} alt="userImage" />
           <FormContainer>
             <label htmlFor="publishNewPost">
               What are you going to share today?

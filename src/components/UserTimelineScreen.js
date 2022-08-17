@@ -18,21 +18,18 @@ export default function UserTimelineScreen() {
   const [user, setUser] = useState({});
   const [pageUser, setPageUser] = useState({});
 
-  let tokenObject = localStorage.getItem("tokenUser");
-
+  
   const navigate = useNavigate();
 
   const URL = "http://localhost:4000/";
-  const localToken = JSON.parse(localStorage.getItem("tokenUser"));
+  const localToken = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token.token) {
       if (!localToken) {
         navigate("/");
       } else {
         setToken({ ...localToken });
       }
-    }
     requestGetUserPosts();
   }, [refreshTimeline, localToken, navigate, setToken, token.token]);
 
@@ -44,11 +41,11 @@ export default function UserTimelineScreen() {
   async function request() {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${JSON.parse(tokenObject).token}` },
+        headers: { Authorization: `Bearer ${(localToken)}` },
       };
+      const user = await axios.get(`${URL}userToken`, config)
       const response = await axios.get(`${URL}user/${id}`, config);
-      const user = await axios.get(`${URL}userToken`, config);
-      const pageUserResult = await axios.post(`${URL}users`, config);
+      const pageUserResult = await axios.get(`${URL}users/${id}`, config);
       setPageUser(pageUserResult.data);
       setPosts(response.data);
       setUser(user.data);
@@ -61,7 +58,7 @@ export default function UserTimelineScreen() {
   async function requestGetUserPosts() {
     try {
       const config = {
-        headers: { Authorization: `Bearer ${JSON.parse(tokenObject).token}` },
+        headers: { Authorization: `Bearer ${(localToken)}` },
       };
       const response = await axios.get(`${URL}user/${id}`, config);
       setPosts(response.data);
@@ -120,7 +117,7 @@ export default function UserTimelineScreen() {
       </div>
       <div className="page-title">
         <div className="user-page">
-          <img src={pageUser.picture} alt="user" />
+          <img src={pageUser.profile_image} alt="user" />
           <h1>{pageUser ? pageUser.username : "User"} posts</h1>
         </div>
       </div>
