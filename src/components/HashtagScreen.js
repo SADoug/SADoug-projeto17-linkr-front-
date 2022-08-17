@@ -22,7 +22,7 @@ export default function HashgtagScreen() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  const URL = "https://localhost:4001/";
+  const URL = "https://linkr-projeto17.herokuapp.com/";
 
   useEffect(() => {
    
@@ -54,7 +54,7 @@ export default function HashgtagScreen() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       
-      const response = await axios.get(`http://localhost:4001/posts`, config);
+      const response = await axios.get(`https://linkr-projeto17.herokuapp.com/posts`, config);
         setPosts(response.data);
         console.log("REQUEST", response)
   
@@ -93,7 +93,7 @@ export default function HashgtagScreen() {
   }
 
   useEffect(() => {
-    const URL = "http://localhost:4001/hashtags";
+    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)

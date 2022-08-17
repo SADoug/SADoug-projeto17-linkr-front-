@@ -14,7 +14,7 @@ export default function HeaderBar() {
     const [refresh, setRefresh] = useState({ token: "" });
     const [logout, setLogout] = useState(false);
     const navigate = useNavigate();
-    const URL = "http://localhost:4001/";
+    const URL = "https://linkr-projeto17.herokuapp.com/";
 
     const localToken = localStorage.getItem("token");
     console.log(localToken)

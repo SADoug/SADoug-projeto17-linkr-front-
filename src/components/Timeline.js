@@ -21,7 +21,7 @@ export default function Timeline() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  const URL = "https://localhost:4001/";
+  const URL = "https://linkr-projeto17.herokuapp.com/";
 
   useEffect(() => {
    
@@ -92,7 +92,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "http://localhost:4001/hashtags";
+    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)

@@ -10,13 +10,13 @@ import UserContext from '../../contexts/Usercontext';
 
 export default function SearchBar(){
     const [search, setSearch] = useState("")
-    const [searchResults, setSearchResults] = useState();
+    const [searchResults, setSearchResults] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const { token } = useContext(UserContext);
 
     const navigate = useNavigate();
     const localToken = localStorage.getItem("token");
-    const URL = "http://localhost:4001/";
+    const URL = "https://linkr-projeto17.herokuapp.com/";
 
     useEffect(() => {
         if (!!search) {
@@ -48,14 +48,14 @@ export default function SearchBar(){
             <div className="icon">
               <AiOutlineSearch
                 onClick={() => {
-                  if (searchResults === true) {
+                  if (searchResults.length > 0) {
                     navigate(`/user/${searchResults[0].id}`);
                   }
                 }}
               />
             </div>
           </SearchBarDiv>
-          {searchResults === true ? (
+          {searchResults.length > 0 ? (
             <ResultContainer>
               {searchResults.map((result, index) => {
                 return (
@@ -67,7 +67,7 @@ export default function SearchBar(){
                       navigate(`/user/${result.id}`);
                     }}
                   >
-                    <img src={result.picture} alt="user" />
+                    <img src={result.profile_image} alt="user" />
                     <p>{result.username}</p>
                   </li>
                 );
