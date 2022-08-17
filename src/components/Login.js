@@ -12,7 +12,7 @@ export default function SigninScreen() {
   const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
   function login() {
-    const URL = "http://localhost:4000/signin";
+    const URL = "http://localhost:4001/signin";
 
     const promise = axios.post(URL, {
       email, // email: email
