@@ -257,10 +257,10 @@ export default function PostCard(props) {
             <p
               className="username"
               onClick={() =>
-                navigate(`/user/${id}`)
+                navigate(`/user/${post_id ? userRetweet.id : user_id}`)
               }
             >
-              {post_id}
+              {post_id ? userRetweet.username : username}
             </p>
             <p className="description">
               {editing ? (
@@ -314,6 +314,7 @@ const DeleteConfirm = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
   .confirm-container {
     height: auto;
     width: 75%;
@@ -421,14 +422,6 @@ const Div = styled.div`
   }
   .right-container {
     padding-right: 14px;
-  }
-  .right-container p {
-    font-family: "Lato", normal;
-    font-weight: 400;
-    font-size: 9px;
-    line-height: 11px;
-    text-align: center;
-    color: #ffffff;
   }
   .right-container p {
     font-family: "Lato", normal;
