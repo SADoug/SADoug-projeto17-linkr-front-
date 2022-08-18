@@ -8,7 +8,7 @@ import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
 import PostCard from "./shared/PostCard";
 import SearchBar from "./shared/SearchBar";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Timeline() {
@@ -19,6 +19,7 @@ export default function Timeline() {
   const [page, setPage] = useState(1);
   const [loadMore, setLoadMore] = useState(true);
   const [Hashtags, setHashtags] = useState("");
+  const navigate = useNavigate();
 
   const localToken = localStorage.getItem("token");
   const URL = "https://linkr-projeto17.herokuapp.com/";
@@ -28,7 +29,7 @@ export default function Timeline() {
   }, [refreshTimeline]);
 
   async function refreshpage() {
-      Navigate("/timeline") 
+      navigate("/timeline") 
   }
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function Timeline() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       
-      const response = await axios.get(`https://linkr-projeto17.herokuapp.com/posts`, config);
+      const response = await axios.get(`http://localhost:4001/posts`, config);
         setPosts(response.data);
         console.log("REQUEST", response)
   
@@ -93,7 +94,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
+    const URL = "http://localhost:4001/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
@@ -104,16 +105,16 @@ export default function Timeline() {
     });
   }, []);
   console.log("HASHTAGS", Hashtags)
-
-  async function hashtagpage(name) {
-    try {
-      Navigate("hhttps://linkr-projeto17.herokuapp.com/hashtag/name")
+// lembrar de apagar
+  // async function hashtagpage(name) {
+  //   try {
+  //     navigate("hhttps://linkr-projeto17.herokuapp.com/hashtag/name")
   
-    } catch (e) {
+  //   } catch (e) {
       
-      console.log(e, "requestGetPosts");
-    }
-  }
+  //     console.log(e, "requestGetPosts");
+  //   }
+  // }
 
 
   return posts[0] === "initial" ? (
@@ -141,7 +142,12 @@ export default function Timeline() {
         <div>
         </div>
           {Hashtags && (
-            Hashtags.map(hashtags =>  <a key={hashtags.id} onClick={hashtagpage}># {hashtags.name}</a>)
+            Hashtags.map(hashtags =>  <a key={hashtags.id} onclick={() =>
+               
+              navigate(`/hashtag/${hashtags.name}`)
+            }>
+            # {hashtags.name}
+            </a>)
           )}
           </Tranding>
         </div>
@@ -187,14 +193,16 @@ export default function Timeline() {
         <div className="trending-virtual-container">
           <div className="trending-container">
           <Tranding>
-          <h1 className="titulo">trending</h1>
-        <div className="separador">
+          <h1>trending</h1>
+        <div>
         </div>
-        <div className= "hashtags">
           {Hashtags && (
-            Hashtags.map(hashtags => <a key={hashtags.id} onClick={hashtagpage()} onclickc># {hashtags.name}</a>)
+            Hashtags.map(hashtags =>  <a key={hashtags.id} onclick={() =>
+              navigate(`/hashtag/${hashtags.name}`)
+            }>
+            # {hashtags.name}
+            </a>)
           )}
-          </div>
           </Tranding>
           </div>
         </div>

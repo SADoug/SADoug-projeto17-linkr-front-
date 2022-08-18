@@ -485,7 +485,7 @@ const DeleteConfirm = styled.div`
       width: 200px;
       color: white;
       font-size: 20px;
-      font-family: "Lato";
+      font-family: "Oswald";
       font-weight: 700;
       text-align: center;
       margin-bottom: 30px;
@@ -496,7 +496,7 @@ const DeleteConfirm = styled.div`
       padding: 0 10px;
       border: none;
       border-radius: 4px;
-      font-family: "Lato";
+      font-family: "Oswald";
       font-weight: 700;
       font-size: 14px;
     }
@@ -574,7 +574,7 @@ const Div = styled.div`
     padding-right: 14px;
   }
   .right-container p {
-    font-family: "Lato", normal;
+    font-family: "Oswald", normal;
     font-weight: 400;
     font-size: 9px;
     line-height: 11px;
@@ -611,13 +611,13 @@ const Div = styled.div`
     font-size: 17px;
   }
   .username {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-size: 17px;
     line-height: 20px;
     color: #ffffff;
   }
   .description {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-weight: 400;
     font-size: 15px;
     line-height: 18px;
@@ -633,7 +633,7 @@ const Div = styled.div`
       width: 100%;
       height: 45px;
       resize: none;
-      font-family: "Lato";
+      font-family: "Oswald";
       border-radius: 8px;
       border: none;
       padding: 2px 5px;
@@ -659,7 +659,7 @@ const Div = styled.div`
     padding: 7px 7px 8px 11px;
   }
   .link-title {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-size: 11px;
     line-height: 13px;
     color: #cecece;
@@ -670,7 +670,7 @@ const Div = styled.div`
     text-overflow: ellipsis;
   }
   .link-description {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-size: 9px;
     line-height: 11px;
     color: #9b9595;
@@ -681,7 +681,7 @@ const Div = styled.div`
     text-overflow: ellipsis;
   }
   .link-url {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-size: 9px;
     line-height: 11px;
     color: #cecece;

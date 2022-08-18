@@ -184,7 +184,7 @@ const Div = styled.div`
     margin-top: 30px;
   }
   .message {
-    font-family: "Lato";
+    font-family: "Oswald";
     font-style: normal;
     font-weight: 400;
     font-size: 22px;

@@ -25,7 +25,7 @@ function App() {
             <Route path="/sign-up" element={<SignupScreen />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="/user/:id" element ={<UserTimelineScreen />}></Route>
-            <Route path="/hashtag/:id" element ={<HashgtagScreen />}></Route>
+            <Route path="/hashtag/:name" element ={<HashgtagScreen />}></Route>
         </Routes>
     </BrowserRouter>
     <AppContainer/>

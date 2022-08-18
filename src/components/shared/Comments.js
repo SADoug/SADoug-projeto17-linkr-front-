@@ -117,7 +117,7 @@ export default function CommentSection(props) {
     word-break: break-word;
   }
   .commentContent {
-    font-family: "Lato", normal;
+    font-family: "Oswald", normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 16.8px;

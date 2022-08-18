@@ -129,7 +129,7 @@ export default function PublishPost(props) {
       height: 22px;
       width: 122px;
       align-self: flex-end;
-      font-family: Lato;
+      font-family: "Oswald";
       font-size: 13px;
       font-weight: 700;
       text-align: center;

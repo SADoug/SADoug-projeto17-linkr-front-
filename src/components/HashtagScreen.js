@@ -8,7 +8,7 @@ import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
 import PostCard from "./shared/PostCard";
 import SearchBar from "./shared/SearchBar";
-import { Navigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export default function HashgtagScreen() {
@@ -22,25 +22,20 @@ export default function HashgtagScreen() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  const URL = "https://linkr-projeto17.herokuapp.com/";
+  const URL =  "https://linkr-projeto17.herokuapp.com/posthashtags/";
 
   useEffect(() => {
    
       request();
   }, [refreshTimeline]);
 
-  async function refreshpage() {
   
-      Navigate("/timeline") 
-    
-  }
-
-
-  
+  const { name } = useParams();
+  console.log(name)
   async function request() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
-      const response = await axios.get(`${URL}posts`, config);
+      const response = await axios.get(`${URL}${name}`, config);
       const user = await axios.get(`${URL}userToken`, config);
       
       setUser(user.data);
@@ -54,7 +49,7 @@ export default function HashgtagScreen() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       
-      const response = await axios.get(`https://linkr-projeto17.herokuapp.com/posts`, config);
+      const response = await axios.get(`${URL}${name}`, config);
         setPosts(response.data);
         console.log("REQUEST", response)
   
