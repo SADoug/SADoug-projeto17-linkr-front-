@@ -24,17 +24,18 @@ export default function Timeline() {
   const URL = "https://linkr-projeto17.herokuapp.com/";
 
   useEffect(() => {
-   
-      request();
+    requestGetPosts();
   }, [refreshTimeline]);
 
   async function refreshpage() {
-  
       Navigate("/timeline") 
-    
   }
 
-
+  useEffect(() => {
+    if (!!localToken) {
+      request();
+    }
+  }, [refresh]);
   
   async function request() {
     try {
@@ -53,7 +54,7 @@ export default function Timeline() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       
-      const response = await axios.get(`http://localhost:4001/posts`, config);
+      const response = await axios.get(`https://linkr-projeto17.herokuapp.com/posts`, config);
         setPosts(response.data);
         console.log("REQUEST", response)
   
@@ -106,7 +107,7 @@ export default function Timeline() {
 
   async function hashtagpage(name) {
     try {
-      Navigate("http://localhost:4001/hashtag/name")
+      Navigate("hhttps://linkr-projeto17.herokuapp.com/hashtag/name")
   
     } catch (e) {
       
