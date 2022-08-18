@@ -7,6 +7,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { IoHeartOutline, IoHeart, IoChatbubblesOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import CommentSection from "./Comments";
 
 export default function PostCard(props) {
   const {
@@ -22,16 +23,18 @@ export default function PostCard(props) {
     user_id,
   } = props.post;
 
+  const [reset, setReset] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [likePost, setLikePost] = useState(false);
   const [editing, setEditing] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const [likePost, setLikePost] = useState(false);
   const [descriptionEdit, setDescriptionEdit] = useState("");
   const [description, setDescription] = useState(props.post.description);
   const [likesCount, setLikesCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
   const [shareCount, setShareCount] = useState(0);
   const [userRetweet, setUserRetweet] = useState({ id: 0, username: "" });
+  const [likesUsers, setLikesUsers] = useState([]);
   const [tooltipString, setTooltipString] = useState("");
   const [commentBar, setCommentBar] = useState(false);
   const { user, refresh } = props;
@@ -49,11 +52,88 @@ export default function PostCard(props) {
   const navigate = useNavigate();
   const URL = "https://linkr-projeto17.herokuapp.com/";
   const inputRef = useRef(null);
+  const idOriginal = post_id ? post_id : id;
 
+  useEffect(() => {
+    checkLikePublishing();
+    getLikesCount();
+    getCommentCount();
+    getShareCount();
+  }, [reset]);
 
   function redirectToLink() {
     window.open(shared_url, "_blank");
   }
+
+  function getLikesCount() {
+    setLoading(true);
+    const config = { headers: { Authorization: `Bearer ${localToken}` } };
+    const promise = axios.get(`${URL}posts/likecount/${idOriginal}`, config);
+
+    promise.then((response) => {
+      setLikesCount(Number(response.data.count));
+      setLikesUsers(response.data.users);
+      setLoading(false);
+    });
+    promise.catch((error) => {
+      console.log(error);
+      setLoading(false);
+    });
+  }
+
+  function getCommentCount() {
+    const config = { headers: { Authorization: `Bearer ${localToken}` } };
+    const promise = axios.get(`${URL}posts/commentcount/${idOriginal}`, config);
+
+    promise.then((response) => {
+      setCommentCount(Number(response.data));
+    });
+    promise.catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const getShareCount = async () => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${localToken}` } };
+      const promise = await axios.get(
+        `${URL}posts/sharecount/${idOriginal}`,
+        config
+      );
+
+      setShareCount(promise.data.count);
+      setUserRetweet(promise.data.user);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    setTooltipString(toolString());
+  }, [likesUsers]);
+
+  function likePublishing() {
+    setLoading(true);
+    const promise = axios.post(
+      `${URL}posts/likes/${idOriginal}`,
+      { idPost: id },
+      {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      }
+    );
+    promise.then((response) => {
+      setLikePost(true);
+      setLoading(false);
+      setReset([]);
+    });
+    promise.catch((error) => {
+      console.log(error);
+      setLoading(false);
+    });
+  }
+
 
   const deletePost = async () => {
     setLoading(true);
@@ -126,6 +206,54 @@ export default function PostCard(props) {
     }
   };
 
+  const toolString = () => {
+    let string = "";
+
+    if (likePost) {
+      string += "Você";
+
+      if (likesCount === 4) {
+        string += `, ${likesUsers[0]} e outras ${likesCount - 2} pessoas`;
+      } else if (likesCount === 3) {
+        string += `, ${likesUsers[0]} e outra 1 pessoa`;
+      } else if (likesCount === 2) {
+        string += ` e ${likesUsers[0]}`;
+      }
+    } else {
+      if (likesCount > 3) {
+        string += `${likesUsers[0]}, ${likesUsers[1]} e outras ${
+          likesCount - 2
+        } pessoas`;
+      } else if (likesCount === 3) {
+        string += `${likesUsers[0]}, ${likesUsers[1]} e outra 1 pessoa`;
+      } else if (likesCount === 2) {
+        string += `${likesUsers[0]} e ${likesUsers[1]}`;
+      } else if (likesCount === 1) {
+        string += `${likesUsers[0]}`;
+      } else {
+        string += "Nenhum";
+      }
+    }
+    return string;
+  };
+
+  const retweetPost = async () => {
+    setLoading(true);
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${localToken}` },
+      };
+      await axios.post(`${URL}posts/share`, { idPost: id }, config);
+      setReset([]);
+      setSharing(false);
+    } catch (e) {
+      console.log(e.message);
+      setSharing(false);
+      alert("Não foi possível retweetar o post!");
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       {exclude ? (
@@ -163,7 +291,7 @@ export default function PostCard(props) {
               >
                 No, cancel
               </button>
-              <button className="confirm" onClick={deletePost}>
+              <button className="confirm" onClick={retweetPost}>
                 {loading ? loader : "Yes, share!"}
               </button>
             </div>
@@ -192,13 +320,13 @@ export default function PostCard(props) {
               }
             ></img>
              {likePost ? (
-              <IoHeart className="likebutton marked" onClick={deletePost} />
+              <IoHeart className="likebutton marked" onClick={likePublishing} />
             ) : (
               <IoHeartOutline
                 className="likebutton"
                 onClick={() => {
                   if (!post_id) {
-                    //likePublishing();
+                    likePublishing();
                   }
                 }}
               />
@@ -294,10 +422,34 @@ export default function PostCard(props) {
           </div>
         </div>
       </Div>
+      {commentBar ? (
+        <CommentSection post={props.post} setReset={setReset} />
+      ) : (
+        <></>
+      )}
     </>
   );
+  function checkLikePublishing() {
+    // setLoading(true);
+    const promise = axios.post(
+      `${URL}posts/checklike`,
+      { idPost: id },
+      {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      }
+    );
+    promise.then((response) => {
+      setLikePost(response.data);
+      // setLoading(false);
+    });
+    promise.catch((error) => {
+      console.log(error);
+      // setLoading(false);
+    });
+  }
 }
-
 
 
 const DeleteConfirm = styled.div`

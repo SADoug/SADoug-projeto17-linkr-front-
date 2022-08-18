@@ -10,7 +10,7 @@ import axios from "axios";
 
 
 export default function HeaderBar() {
-    const { token, profile_image, setToken, userImage, setUserImage, setName } = useContext(UserContext);
+    const { setToken, userImage, setUserImage, setName } = useContext(UserContext);
     const [refresh, setRefresh] = useState({ token: "" });
     const [logout, setLogout] = useState(false);
     const navigate = useNavigate();
