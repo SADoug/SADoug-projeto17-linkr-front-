@@ -22,7 +22,7 @@ export default function HashgtagScreen() {
   const [Hashtags, setHashtags] = useState("");
 
   const localToken = localStorage.getItem("token");
-  const URL =  "https://linkr-projeto17.herokuapp.com/posthashtags/";
+  const URL =  "http://linkr-projeto17.herokuapp.com/posthashtags/";
 
   useEffect(() => {
    
@@ -88,7 +88,7 @@ export default function HashgtagScreen() {
   }
 
   useEffect(() => {
-    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
+    const URL = "http://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
@@ -116,14 +116,16 @@ export default function HashgtagScreen() {
           </div>
         </div>
         <div className="trending-hashtags-container">
-          <Tranding>
-          <h1>trending</h1>
-        <div>
+        <Tranding>
+          <h1 className="titulo">trending</h1>
+        <div className="separador">
         </div>
+        <div className= "hashtags">
           {Hashtags && (
-            Hashtags.map(hashtags =>  <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
+            Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
           )}
-          </Tranding>
+          </div>
+        </Tranding>
         </div>
       </div>
     </Div>
@@ -168,7 +170,7 @@ export default function HashgtagScreen() {
         </div>
         <div className= "hashtags">
           {Hashtags && (
-            Hashtags.map(hashtags => <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
+            Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
           )}
           </div>
           </Tranding>

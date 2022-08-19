@@ -6,13 +6,13 @@ import { useContext } from "react";
 import UserContext from "../contexts/Usercontext";
 
 export default function SigninScreen() {
-  const [email, setEmail] = React.useState("douglas@douglas.com");
-  const [password, setPassword] = React.useState("12354678");
+  const [email, setEmail] = React.useState("teste@teste.com");
+  const [password, setPassword] = React.useState("12345678");
   const navigate = useNavigate();
   const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
   function login() {
-    const URL = "https://linkr-projeto17.herokuapp.com/signin";
+    const URL = "http://linkr-projeto17.herokuapp.com/signin";
 
     const promise = axios.post(URL, {
       email, // email: email

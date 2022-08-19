@@ -21,7 +21,7 @@ export default function UserTimelineScreen() {
   
   const navigate = useNavigate();
 
-  const URL = "https://linkr-projeto17.herokuapp.com/";
+  const URL = "http://linkr-projeto17.herokuapp.com/";
   const localToken = localStorage.getItem("token");
 
   useEffect(() => {

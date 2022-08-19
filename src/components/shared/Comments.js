@@ -12,7 +12,7 @@ export default function CommentSection(props) {
     const { setReset } = props;
     const tokenJwt = localStorage.getItem("tokenUser");
 
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const URL = "http://linkr-projeto17.herokuapp.com/";
 
 
     useEffect(() => {

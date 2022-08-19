@@ -16,7 +16,7 @@ export default function SearchBar(){
 
     const navigate = useNavigate();
     const localToken = localStorage.getItem("token");
-    const URL = "https://linkr-projeto17.herokuapp.com/";
+    const URL = "http://linkr-projeto17.herokuapp.com/";
 
     useEffect(() => {
         if (!!search) {

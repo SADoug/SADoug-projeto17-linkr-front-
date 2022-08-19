@@ -22,7 +22,7 @@ export default function Timeline() {
   const navigate = useNavigate();
 
   const localToken = localStorage.getItem("token");
-  const URL = "https://linkr-projeto17.herokuapp.com/";
+  const URL = "http://linkr-projeto17.herokuapp.com/";
 
   useEffect(() => {
     requestGetPosts();
@@ -55,7 +55,7 @@ export default function Timeline() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       
-      const response = await axios.get(`http://localhost:4001/posts`, config);
+      const response = await axios.get(`http://linkr-projeto17.herokuapp.com/posts`, config);
         setPosts(response.data);
         console.log("REQUEST", response)
   
@@ -94,7 +94,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "http://localhost:4001/hashtags";
+    const URL = "http://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
@@ -139,7 +139,7 @@ export default function Timeline() {
         <div className="trending-hashtags-container">
           <Tranding>
           <h1>trending</h1>
-        <div>
+          <div className="separador">
         </div>
           {Hashtags && (
             Hashtags.map(hashtags =>  <a key={hashtags.id} onclick={() =>
@@ -193,9 +193,10 @@ export default function Timeline() {
         <div className="trending-virtual-container">
           <div className="trending-container">
           <Tranding>
-          <h1>trending</h1>
-        <div>
+          <h1 className="titulo">trending</h1>
+        <div className="separador">
         </div>
+        <div className="hashtags">
           {Hashtags && (
             Hashtags.map(hashtags =>  <a key={hashtags.id} onclick={() =>
               navigate(`/hashtag/${hashtags.name}`)
@@ -203,6 +204,7 @@ export default function Timeline() {
             # {hashtags.name}
             </a>)
           )}
+        </div>
           </Tranding>
           </div>
         </div>
@@ -216,9 +218,9 @@ const Tranding = styled.div`
 
 width: 301px;
 height: 406px;
-
 background: #171717;
 border-radius: 16px;
+
 
 .hashtags {
 display: flex;
