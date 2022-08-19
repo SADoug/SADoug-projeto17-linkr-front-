@@ -12,7 +12,7 @@ export default function SigninScreen() {
   const { setToken, setData, setLogo, setName } = useContext(UserContext);
 
   function login() {
-    const URL = "http://linkr-projeto17.herokuapp.com/signin";
+    const URL = "https://linkr-projeto17.herokuapp.com/signin";
 
     const promise = axios.post(URL, {
       email, // email: email

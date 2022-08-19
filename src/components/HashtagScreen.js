@@ -24,7 +24,7 @@ export default function HashgtagScreen() {
   const navigate = useNavigate();
 
   const localToken = localStorage.getItem("token");
-  const URL = "http://linkr-projeto17.herokuapp.com/posthashtags/";
+  const URL = "https://linkr-projeto17.herokuapp.com/posthashtags/";
   const { name } = useParams();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function HashgtagScreen() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       const response = await axios.get(`${URL}${name}`, config);
-      const user = await axios.get(`http://linkr-projeto17.herokuapp.com/userToken`, config);
+      const user = await axios.get(`https://linkr-projeto17.herokuapp.com/userToken`, config);
 
       setUser(user.data);
     } catch (e) {
@@ -96,7 +96,7 @@ export default function HashgtagScreen() {
 
 
   useEffect(() => {
-    const URL = "http://linkr-projeto17.herokuapp.com/hashtags";
+    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
@@ -130,7 +130,7 @@ export default function HashgtagScreen() {
             </div>
             <div className="hashtags">
               {Hashtags && (
-                Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
+                Hashtags.map(hashtags => <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
               )}
             </div>
           </Tranding>
@@ -178,7 +178,7 @@ export default function HashgtagScreen() {
               </div>
               <div className="hashtags">
                 {Hashtags && (
-                  Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
+                  Hashtags.map(hashtags => <a key={hashtags.id} href="https://www.w3schools.com"># {hashtags.name}</a>)
                 )}
               </div>
             </Tranding>

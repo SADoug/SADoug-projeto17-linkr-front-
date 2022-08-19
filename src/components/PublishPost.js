@@ -15,7 +15,7 @@ export default function PublishPost(props) {
   const [publishLoading, setPublishLoading] = useState(false);
 
   const tokenJwt = localStorage.getItem("token");
-  const URL = "http://linkr-projeto17.herokuapp.com/";
+  const URL = "https://linkr-projeto17.herokuapp.com/";
 
   function sendPost(event) {
     event.preventDefault();
@@ -61,7 +61,7 @@ export default function PublishPost(props) {
           <input
             name="url"
             type="url"
-            placeholder="http://..."
+            placeholder="https://..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             disabled={publishLoading}

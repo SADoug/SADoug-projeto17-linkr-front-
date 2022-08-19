@@ -22,7 +22,7 @@ export default function Timeline() {
   const navigate = useNavigate();
 
   const localToken = localStorage.getItem("token");
-  const URL = "http://linkr-projeto17.herokuapp.com/";
+  const URL = "https://linkr-projeto17.herokuapp.com/";
 
   useEffect(() => {
     requestGetPosts();
@@ -55,7 +55,7 @@ export default function Timeline() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
 
-      const response = await axios.get(`http://linkr-projeto17.herokuapp.com/posts`, config);
+      const response = await axios.get(`https://linkr-projeto17.herokuapp.com/posts`, config);
       setPosts(response.data);
      
 
@@ -94,7 +94,7 @@ export default function Timeline() {
   }
 
   useEffect(() => {
-    const URL = "http://linkr-projeto17.herokuapp.com/hashtags";
+    const URL = "https://linkr-projeto17.herokuapp.com/hashtags";
     const promise = axios.get(URL);
     promise.then(response => {
       setHashtags(response.data)
