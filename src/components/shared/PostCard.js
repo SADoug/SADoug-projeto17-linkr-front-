@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import ReactHashtag from "@mdnm/react-hashtag";
 import { FaTrash, FaRetweet } from "react-icons/fa";
 import { TiPencil } from "react-icons/ti";
 import { ThreeDots } from "react-loader-spinner";
@@ -8,6 +9,7 @@ import { IoHeartOutline, IoHeart, IoChatbubblesOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import CommentSection from "./Comments";
+
 
 export default function PostCard(props) {
   const {
@@ -76,7 +78,6 @@ export default function PostCard(props) {
       setLoading(false);
     });
     promise.catch((error) => {
-      console.log(error);
       setLoading(false);
     });
   }
@@ -89,7 +90,7 @@ export default function PostCard(props) {
       setCommentCount(Number(response.data));
     });
     promise.catch((error) => {
-      console.log(error);
+
     });
   }
 
@@ -104,7 +105,7 @@ export default function PostCard(props) {
       setShareCount(promise.data.count);
       setUserRetweet(promise.data.user);
     } catch (e) {
-      console.log(e);
+
     }
   };
 
@@ -129,7 +130,7 @@ export default function PostCard(props) {
       setReset([]);
     });
     promise.catch((error) => {
-      console.log(error);
+
       setLoading(false);
     });
   }
@@ -143,12 +144,12 @@ export default function PostCard(props) {
       };
       const response = await axios.delete(`${URL}deleteposts/${id}`, config);
       setExclude(false);
-      console.log(response);
+
       refresh([]);
     } catch (e) {
       alert("Não foi possível excluir o post!");
       setExclude(false);
-      console.log(e);
+
     }
     setLoading(false);
   };
@@ -183,7 +184,7 @@ export default function PostCard(props) {
       setEditing(false);
       setLoading(false);
     } catch (e) {
-      console.log(e.message);
+
       alert("Não foi possível salvar as alterações!");
       setLoading(false);
     }
@@ -221,9 +222,8 @@ export default function PostCard(props) {
       }
     } else {
       if (likesCount > 3) {
-        string += `${likesUsers[0]}, ${likesUsers[1]} e outras ${
-          likesCount - 2
-        } pessoas`;
+        string += `${likesUsers[0]}, ${likesUsers[1]} e outras ${likesCount - 2
+          } pessoas`;
       } else if (likesCount === 3) {
         string += `${likesUsers[0]}, ${likesUsers[1]} e outra 1 pessoa`;
       } else if (likesCount === 2) {
@@ -247,7 +247,7 @@ export default function PostCard(props) {
       setReset([]);
       setSharing(false);
     } catch (e) {
-      console.log(e.message);
+     
       setSharing(false);
       alert("Não foi possível retweetar o post!");
     }
@@ -301,7 +301,7 @@ export default function PostCard(props) {
         <></>
       )}
       <Div retweet={post_id}>
-      {post_id ? (
+        {post_id ? (
           <div className="share-container">
             <FaRetweet className="mini-retweet-icon" />
             Re-posted by
@@ -312,14 +312,14 @@ export default function PostCard(props) {
         )}
         <div className="post-container">
           <div className="right-container">
-          <img
+            <img
               src={post_id ? userRetweet.profile_image : profile_image}
               alt={post_id ? userRetweet.username : username}
               onClick={() =>
                 navigate(`/user/${post_id ? userRetweet.id : user_id}`)
               }
             ></img>
-             {likePost ? (
+            {likePost ? (
               <IoHeart className="likebutton marked" onClick={likePublishing} />
             ) : (
               <IoHeartOutline
@@ -404,10 +404,14 @@ export default function PostCard(props) {
                 />
               ) : (
                 <>
-                  {message}
-                  {(hashtag) =>
-                    navigate(`/hashtag/`)
-                  }
+                  <ReactHashtag renderHashtag={(hashtagValue) => (
+                    <div className="hashtag" onClick={() =>
+                      navigate(`/hashtag/${hashtagValue})`)}>
+                      {hashtagValue}</div>
+                  )}>
+                    {message}
+                  </ReactHashtag>
+
                 </>
               )}
             </p>

@@ -2,8 +2,8 @@ import styled from "styled-components";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroller";
 import { TailSpin } from "react-loader-spinner";
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import UserContext from "../contexts/Usercontext.js";
 import HeaderBar from "./shared/HeaderBar";
 import PublishPost from "./PublishPost";
 import PostCard from "./shared/PostCard";
@@ -20,24 +20,33 @@ export default function HashgtagScreen() {
   const [page, setPage] = useState(1);
   const [loadMore, setLoadMore] = useState(true);
   const [Hashtags, setHashtags] = useState("");
+  const { token, setToken } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const localToken = localStorage.getItem("token");
-  const URL =  "http://linkr-projeto17.herokuapp.com/posthashtags/";
+  const URL = "http://linkr-projeto17.herokuapp.com/posthashtags/";
+  const { name } = useParams();
 
   useEffect(() => {
-   
-      request();
-  }, [refreshTimeline]);
+    if (!localToken) {
+      navigate("/");
+    } else {
+      setToken({ ...localToken });
+    }
+    requestGetPosts();
+  }, [refreshTimeline, localToken, navigate, setToken, token.token]);
 
-  
-  const { name } = useParams();
-  console.log(name)
+  useEffect(() => {
+    request();
+  }, [refresh, name]);
+
+
   async function request() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
       const response = await axios.get(`${URL}${name}`, config);
-      const user = await axios.get(`${URL}userToken`, config);
-      
+      const user = await axios.get(`http://linkr-projeto17.herokuapp.com/userToken`, config);
+
       setUser(user.data);
     } catch (e) {
       setPosts(["error"]);
@@ -48,11 +57,10 @@ export default function HashgtagScreen() {
   async function requestGetPosts() {
     try {
       const config = { headers: { Authorization: `Bearer ${localToken}` } };
-      
       const response = await axios.get(`${URL}${name}`, config);
-        setPosts(response.data);
-        console.log("REQUEST", response)
-  
+      setPosts(response.data.postsList
+      );
+
     } catch (e) {
       setPosts(["error"]);
       console.log(e, "requestGetPosts");
@@ -60,7 +68,6 @@ export default function HashgtagScreen() {
   }
 
   function renderPosts(posts) {
-    console.log(posts)
     if (posts.length === 0) {
       return (
         <div className="message-container">
@@ -78,14 +85,15 @@ export default function HashgtagScreen() {
         </div>
       );
     }
-   if (posts){
-     return posts.map((post, index) => {
-       return (
-         <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
-       );
-     });
+    if (posts) {
+      return posts.map((post, index) => {
+        return (
+          <PostCard key={index} post={post} user={user.id} refresh={setRefresh} />
+        );
+      });
     }
   }
+
 
   useEffect(() => {
     const URL = "http://linkr-projeto17.herokuapp.com/hashtags";
@@ -98,7 +106,7 @@ export default function HashgtagScreen() {
       alert("Data invalid")
     });
   }, []);
-  console.log("HASHTAGS", Hashtags)
+  
 
   return posts[0] === "initial" ? (
     <Div>
@@ -110,22 +118,22 @@ export default function HashgtagScreen() {
           </div>
 
           <h1>timeline</h1>
-          
+
           <div className="message-container">
             <p className="message">Loading . . .</p>
           </div>
         </div>
         <div className="trending-hashtags-container">
-        <Tranding>
-          <h1 className="titulo">trending</h1>
-        <div className="separador">
-        </div>
-        <div className= "hashtags">
-          {Hashtags && (
-            Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
-          )}
-          </div>
-        </Tranding>
+          <Tranding>
+            <h1 className="titulo">trending</h1>
+            <div className="separador">
+            </div>
+            <div className="hashtags">
+              {Hashtags && (
+                Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
+              )}
+            </div>
+          </Tranding>
         </div>
       </div>
     </Div>
@@ -139,7 +147,7 @@ export default function HashgtagScreen() {
           </div>
 
           <h1>timeline</h1>
-       
+
 
           <div className="infite-scroll-container">
             <InfiniteScroll
@@ -164,16 +172,16 @@ export default function HashgtagScreen() {
         </div>
         <div className="trending-virtual-container">
           <div className="trending-container">
-          <Tranding>
-          <h1 className="titulo">trending</h1>
-        <div className="separador">
-        </div>
-        <div className= "hashtags">
-          {Hashtags && (
-            Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
-          )}
-          </div>
-          </Tranding>
+            <Tranding>
+              <h1 className="titulo">trending</h1>
+              <div className="separador">
+              </div>
+              <div className="hashtags">
+                {Hashtags && (
+                  Hashtags.map(hashtags => <a key={hashtags.id} href="http://www.w3schools.com"># {hashtags.name}</a>)
+                )}
+              </div>
+            </Tranding>
           </div>
         </div>
       </div>

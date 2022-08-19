@@ -7,51 +7,52 @@ import styled from "styled-components";
 
 export default function SignupScreen() {
 
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-    const [senha, setSenha] = useState("");
-    const [foto, setFoto] = useState("");
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [senha, setSenha] = useState("");
+  const [foto, setFoto] = useState("");
+  const navigate = useNavigate();
 
-    function cadastrar() {
-        const URL = "http://linkr-projeto17.herokuapp.com/";
-        ;
-        const promise = axios.post(URL, {
-            email: email,
-            password: senha,
-            username: username,
-            profile_image: foto,
-        });
-        promise.then(response => {
-            const { data } = response;
-            console.log(data);
-            navigate("/");
-        });
-        promise.catch(err => {alert("Insira dados válidos")
-           });
-    }
+  function cadastrar() {
+    const URL = "http://linkr-projeto17.herokuapp.com/";
+    ;
+    const promise = axios.post(URL, {
+      email: email,
+      password: senha,
+      username: username,
+      profile_image: foto,
+    });
+    promise.then(response => {
+      const { data } = response;
+      console.log(data);
+      navigate("/");
+    });
+    promise.catch(err => {
+      alert("Insira dados válidos")
+    });
+  }
 
-    return (
-        <ContainerMaior>
-    <Authcontainer>
-      <Logo>
-    <h1>Linkr</h1>
+  return (
+    <ContainerMaior>
+      <Authcontainer>
+        <Logo>
+          <h1>Linkr</h1>
           <span>
             save, share and discover <br /> the best links on the web
           </span>
-      </Logo>
-    </Authcontainer>
-    <Container>
+        </Logo>
+      </Authcontainer>
+      <Container>
         <input typeof="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input typeof="text" placeholder="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
         <input typeof="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <input typeof="text" placeholder="picture url" value={foto} onChange={(e) => setFoto(e.target.value)} />
-            <Button onClick={cadastrar}>Sign Up</Button>
-            
+        <Button onClick={cadastrar}>Sign Up</Button>
+
         <StyledLink to="/">Switch back to log in</StyledLink>
-    </Container>
+      </Container>
     </ContainerMaior>
-    )
+  )
 }
 const ContainerMaior = styled.div`
 display: flex;

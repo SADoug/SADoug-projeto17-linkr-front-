@@ -17,12 +17,11 @@ export default function HeaderBar() {
     const URL = "https://linkr-projeto17.herokuapp.com/";
 
     const localToken = localStorage.getItem("token");
-    console.log(localToken)
+   
     useEffect(() => {
         if (!localToken && !userImage) {
           if (!localToken) {
-            
-            console.log("teste");
+          
           } else {
             setToken({ ...localToken });
             setRefresh({ ...localToken });
@@ -34,14 +33,10 @@ export default function HeaderBar() {
             },
           });
           promise.then(({ data }) => {
-            console.log("HEADBAR GET USER", data)
-            console.log("HEADBAR GET USER teste", data[0].profile_image)
             setUserImage(data[0].profile_image);
             setName(data[0].username);
           });
           promise.catch((error) => {
-            console.log("HEADBAR GET USER ERROR")
-            console.log(error.response.data);
             localStorage.removeItem("token");
            
           });

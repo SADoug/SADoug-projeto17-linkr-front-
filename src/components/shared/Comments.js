@@ -1,95 +1,96 @@
-import { useContext,useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components"
 import UserContext from "../../contexts/Usercontext";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 
 export default function CommentSection(props) {
-    const { userImage, token } = useContext(UserContext);
-    const [commentText,setcommentText] = useState("");
-    const [postComments, setPostComments] = useState([]);
-    const [refresh, setRefresh] = useState(0);
-    const { setReset } = props;
-    const tokenJwt = localStorage.getItem("tokenUser");
+  const { userImage, token } = useContext(UserContext);
+  const [commentText, setcommentText] = useState("");
+  const [postComments, setPostComments] = useState([]);
+  const [refresh, setRefresh] = useState(0);
+  const { setReset } = props;
+  const tokenJwt = localStorage.getItem("token");
 
-    const URL = "http://linkr-projeto17.herokuapp.com/";
+  const URL = "http://linkr-projeto17.herokuapp.com/";
 
+  useEffect(() => {
+    getPostComments();
+  }, [refresh]);
 
-    useEffect(() => {
-        getPostComments();
-      }, [refresh]);
-    
-      function getPostComments(){
-        const promise = axios.get(`${URL}posts/comment/${props.post.id}`, {
-            headers: {
-              Authorization: `Bearer ${tokenJwt.token}`,
-            }
-          }
-        );
-        promise.then((response) => {
-          setPostComments(response.data);
-        });
-        promise.catch((error) => {
-          console.log(error)
-        });
+  function getPostComments() {
+    const promise = axios.get(`${URL}posts/comment/${props.post.id}`, {
+      headers: {
+        Authorization: `Bearer ${tokenJwt}`,
       }
-
-
-      function sendComment(event){
-        event.preventDefault();
-        const comment = { 
-          idPost: props.post.id,
-          comment: commentText
-        };
-    
-        const promise = axios.post(`${URL}posts/comment`, comment, {
-            headers: {
-              Authorization: `Bearer ${tokenJwt.token}`,
-            }
-          }
-        );
-        promise.then((response) => {
-          setcommentText("");
-          setRefresh(refresh+1);
-          setReset([]);
-        });
-        promise.catch((error) => {
-          alert("Houve um erro ao publicar seu comentário");
-        });
-      }
-
-
-      return(
-        <>
-        <Comments>
-          { postComments.map((comment, index) => 
-            <div className="commentSection" key={index}>
-              <section className="comment">
-                  <img src={comment.picture} alt='user pic'/>
-                  <div className="commentContent">
-                      <span><h3>{comment.username}</h3><p>{comment.type!=''?'• '+comment.type:''}</p></span>
-                      <p>{comment.comment}</p>
-                  </div>
-              </section>
-            </div> 
-          )}
-        </Comments>
-        <PostComment>
-          <img src={userImage} alt='profile pic'/>
-          <form onSubmit={sendComment}>
-            <input type="text" className="commentText" placeholder=" write a comment..." value={commentText} onChange={(e) => setcommentText(e.target.value)}/>
-            <button type="submit">                
-                <IoPaperPlaneOutline/>
-            </button>
-          </form>
-          <div className="background"/>
-        </PostComment>
-        </>
-      )
     }
+    );
+
+    promise.then((response) => {
+      setPostComments(response.data);
+
+    });
+    promise.catch((error) => {
+      console.log(error)
+    });
+  }
 
 
-    const Comments = styled.section`
+  function sendComment(event) {
+    event.preventDefault();
+    const comment = {
+      post_id: props.post.id,
+      message: commentText
+    };
+
+    const promise = axios.post(`${URL}posts/comment`, comment, {
+      headers: {
+        Authorization: `Bearer ${tokenJwt}`,
+      }
+    }
+    );
+    promise.then((response) => {
+      setcommentText("");
+      setRefresh(refresh + 1);
+      setReset([]);
+    });
+    promise.catch((error) => {
+      alert("Houve um erro ao publicar seu comentário");
+    });
+  }
+
+
+  return (
+    <>
+      <Comments>
+        {postComments.map((comment, index) =>
+          <div className="commentSection" key={index}>
+            <section className="comment">
+              <img src={comment.picture} alt='user pic' />
+              <div className="commentContent">
+                <span><h3>{comment.username}</h3><p>{comment.type != '' ? '• ' + comment.type : ''}</p></span>
+                <p>{comment.comment}</p>
+              </div>
+            </section>
+          </div>
+        )}
+      </Comments>
+      <PostComment>
+        <img src={userImage} alt='profile pic' />
+        <form onSubmit={sendComment}>
+          <input type="text" className="commentText" placeholder=" write a comment..." value={commentText} onChange={(e) => setcommentText(e.target.value)} />
+          <button type="submit">
+            <IoPaperPlaneOutline />
+          </button>
+        </form>
+        <div className="background" />
+      </PostComment>
+    </>
+  )
+}
+
+
+const Comments = styled.section`
   background-color: #1E1E1E;
   width: 100vw;
   max-width: 611px;

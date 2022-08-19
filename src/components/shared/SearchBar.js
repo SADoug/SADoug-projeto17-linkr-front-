@@ -8,85 +8,85 @@ import axios from 'axios';
 import UserContext from '../../contexts/Usercontext';
 
 
-export default function SearchBar(){
-    const [search, setSearch] = useState("")
-    const [searchResults, setSearchResults] = useState([]);
-    const [refresh, setRefresh] = useState(false);
-    const { token } = useContext(UserContext);
+export default function SearchBar() {
+  const [search, setSearch] = useState("")
+  const [searchResults, setSearchResults] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const { token } = useContext(UserContext);
 
-    const navigate = useNavigate();
-    const localToken = localStorage.getItem("token");
-    const URL = "http://linkr-projeto17.herokuapp.com/";
+  const navigate = useNavigate();
+  const localToken = localStorage.getItem("token");
+  const URL = "http://linkr-projeto17.herokuapp.com/";
 
-    useEffect(() => {
-        if (!!search) {
-          const promise = axios.get(`${URL}users/search?user=${search}`, {
-            headers: {
-              Authorization: `Bearer ${localToken}`,
-            },
-          });
-          promise.then((response) => setSearchResults(response.data));
-          promise.catch((error) => console.log(error.response.data));
-        }
-      }, [refresh, search, localToken]);
-    
-
-      return (
-        <Container>
-          <SearchBarDiv>
-            <DebounceInput
-              minLength={3}
-              debounceTimeout={300}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setRefresh(!refresh);
-              }}
-              value={search}
-              placeholder="Search for people and friends"
-            />
-
-            <div className="icon">
-              <AiOutlineSearch
-                onClick={() => {
-                  if (searchResults.length > 0) {
-                    navigate(`/user/${searchResults[0].id}`);
-                  }
-                }}
-              />
-            </div>
-          </SearchBarDiv>
-          {searchResults.length > 0 ? (
-            <ResultContainer>
-              {searchResults.map((result, index) => {
-                return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      setSearchResults([]);
-                      setSearch("");
-                      navigate(`/user/${result.id}`);
-                    }}
-                  >
-                    <img src={result.profile_image} alt="user" />
-                    <p>{result.username}</p>
-                  </li>
-                );
-              })}
-            </ResultContainer>
-          ) : (
-            <></>
-          )}
-        </Container>
-      );
+  useEffect(() => {
+    if (!!search) {
+      const promise = axios.get(`${URL}users/search?user=${search}`, {
+        headers: {
+          Authorization: `Bearer ${localToken}`,
+        },
+      });
+      promise.then((response) => setSearchResults(response.data));
+      promise.catch((error) => console.log(error.response.data));
     }
+  }, [refresh, search, localToken]);
 
 
-    const Container = styled.div`
+  return (
+    <Container>
+      <SearchBarDiv>
+        <DebounceInput
+          minLength={3}
+          debounceTimeout={300}
+          onChange={(event) => {
+            setSearch(event.target.value);
+            setRefresh(!refresh);
+          }}
+          value={search}
+          placeholder="Search for people and friends"
+        />
+
+        <div className="icon">
+          <AiOutlineSearch
+            onClick={() => {
+              if (searchResults.length > 0) {
+                navigate(`/user/${searchResults[0].id}`);
+              }
+            }}
+          />
+        </div>
+      </SearchBarDiv>
+      {searchResults.length > 0 ? (
+        <ResultContainer>
+          {searchResults.map((result, index) => {
+            return (
+              <li
+                key={index}
+                onClick={() => {
+                  setSearchResults([]);
+                  setSearch("");
+                  navigate(`/user/${result.id}`);
+                }}
+              >
+                <img src={result.profile_image} alt="user" />
+                <p>{result.username}</p>
+              </li>
+            );
+          })}
+        </ResultContainer>
+      ) : (
+        <></>
+      )}
+    </Container>
+  );
+}
+
+
+const Container = styled.div`
     background-color: #e7e7e7;
     border-radius: 8px;
   `;
-  
-  const ResultContainer = styled.ul`
+
+const ResultContainer = styled.ul`
     padding-bottom: 23px;
     li {
       width: 100%;
@@ -122,8 +122,8 @@ export default function SearchBar(){
       }
     }
   `;
-  
-  const SearchBarDiv = styled.div`
+
+const SearchBarDiv = styled.div`
     width: 350px;
     height: 45px;
     background: #ffffff;

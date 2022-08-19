@@ -20,7 +20,7 @@ export default function SigninScreen() {
     });
     promise.then(response => {
       const { data } = response;
-      console.log(data);
+
       setLogo(data.profileImage)
       setName(data.name)
       let token = localStorage.setItem("token", data.token)

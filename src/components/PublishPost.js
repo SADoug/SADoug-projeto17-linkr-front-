@@ -6,15 +6,15 @@ import UserContext from "../contexts/Usercontext";
 import { Navigate } from "react-router-dom";
 
 export default function PublishPost(props) {
- 
-    let { setRefreshTimeline, refreshTimeline,  refreshpage } = props;
 
-    const { token, userImage } = useContext(UserContext);
-    const [url, setUrl] = useState("");
-    const [text, setText] = useState("");
-    const [publishLoading, setPublishLoading] = useState(false);
+  let { setRefreshTimeline, refreshTimeline, refreshpage } = props;
 
-    const tokenJwt = localStorage.getItem("token");
+  const { token, userImage } = useContext(UserContext);
+  const [url, setUrl] = useState("");
+  const [text, setText] = useState("");
+  const [publishLoading, setPublishLoading] = useState(false);
+
+  const tokenJwt = localStorage.getItem("token");
   const URL = "http://linkr-projeto17.herokuapp.com/";
 
   function sendPost(event) {
@@ -25,71 +25,71 @@ export default function PublishPost(props) {
       message: text,
     };
     const promise = axios.post(`${URL}posts`, post, {
-        headers: {
-          Authorization: `Bearer ${tokenJwt}`,
-        },
-      });
-      
-      promise.then((response) => {
-        setUrl("");
-        setText("");
-        const newRefreshTimeline = !refreshTimeline;
-        setRefreshTimeline(newRefreshTimeline);
-        setPublishLoading(false);
-        
-      });
-      promise.catch((error) => {
-        alert("Houve um erro ao publicar seu link");
-        const newRefreshTimeline = !refreshTimeline;
-        setRefreshTimeline(newRefreshTimeline);
-        setPublishLoading(false);
-      });
-    }
-  
+      headers: {
+        Authorization: `Bearer ${tokenJwt}`,
+      },
+    });
 
-    return (
-        <PublishPostContainer>
-          <img className="user-image" src={userImage} alt="userImage" />
-          <FormContainer>
-            <label htmlFor="publishNewPost">
-              What are you going to share today?
-            </label>
-            <form
-              id="publishNewPost"
-              onSubmit={publishLoading ? () => {} : sendPost}
-            >
-              <input
-                name="url"
-                type="url"
-                placeholder="http://..."
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                disabled={publishLoading}
-                required
-              />
-              <input
-                name="text"
-                type="text"
-                placeholder="Awesome article about #javascript"
-                id="postText"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                disabled={publishLoading}
-              />
-              <input
-                type="submit"
-                value={publishLoading ? "Publishing" : "Publish"}
-                id="postButton"
-                disabled={publishLoading}
-              />
-            </form>
-          </FormContainer>
-        </PublishPostContainer>
-      );
-    }
+    promise.then((response) => {
+      setUrl("");
+      setText("");
+      const newRefreshTimeline = !refreshTimeline;
+      setRefreshTimeline(newRefreshTimeline);
+      setPublishLoading(false);
+
+    });
+    promise.catch((error) => {
+      alert("Houve um erro ao publicar seu link");
+      const newRefreshTimeline = !refreshTimeline;
+      setRefreshTimeline(newRefreshTimeline);
+      setPublishLoading(false);
+    });
+  }
 
 
-    const PublishPostContainer = styled.section`
+  return (
+    <PublishPostContainer>
+      <img className="user-image" src={userImage} alt="userImage" />
+      <FormContainer>
+        <label htmlFor="publishNewPost">
+          What are you going to share today?
+        </label>
+        <form
+          id="publishNewPost"
+          onSubmit={publishLoading ? () => { } : sendPost}
+        >
+          <input
+            name="url"
+            type="url"
+            placeholder="http://..."
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            disabled={publishLoading}
+            required
+          />
+          <input
+            name="text"
+            type="text"
+            placeholder="Awesome article about #javascript"
+            id="postText"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            disabled={publishLoading}
+          />
+          <input
+            type="submit"
+            value={publishLoading ? "Publishing" : "Publish"}
+            id="postButton"
+            disabled={publishLoading}
+          />
+        </form>
+      </FormContainer>
+    </PublishPostContainer>
+  );
+}
+
+
+const PublishPostContainer = styled.section`
     width: 100%;
     height: 164px;
     padding: 10px 15px;
@@ -172,8 +172,8 @@ export default function PublishPost(props) {
       }
     }
   `;
-  
-  const FormContainer = styled.div`
+
+const FormContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
